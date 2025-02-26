@@ -93,6 +93,10 @@ class Mondo():
                     iso_x = (cal_cont - riga_cont) * (GRANDEZZA_TILES // 2)
                     iso_y = (cal_cont + riga_cont) * (GRANDEZZA_TILES // 4)
 
+                    if tile in [7, 8, 9, 10]:  
+                        iso_y -= 10  
+
+
                     if tile == 18:
                         img_sotto = pygame.transform.scale(TILE_IMAGES[3], (GRANDEZZA_TILES, GRANDEZZA_TILES))
                         img_sotto_ratt = img_sotto.get_rect(topleft=(iso_x, iso_y))
