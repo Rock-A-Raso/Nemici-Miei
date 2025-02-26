@@ -103,6 +103,13 @@ class Mondo():
             finestra.blit(img, rect)
         for img, rect in self.lista_fontanelle:
             finestra.blit(img, rect)
+    
+    def trova_fontanella(self):
+        for riga in range(self.num_righe):
+            for col in range(self.num_colonne):
+                if self.matrice[riga][col] == 18:
+                    return col, riga  
+    
 
 ###############################################################################
 # Classe Giocatore: il movimento avviene tile per tile. Il personaggio
@@ -122,6 +129,9 @@ class Giocatore():
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 8
         self.in_movimento = False
+        self.fountain_x, self.fountain_y = mondo.trova_fontanella()
+        self.thirsty = True
+
 
     def update(self):
         # se non ha ancora raggiunto la destinazione, continua a muoversi
@@ -157,6 +167,26 @@ class Giocatore():
                 self.in_movimento = True
         finestra.blit(self.image, self.rect)
 
+    def is_near_fountain(self):
+        if self.fountain_x is None or self.fountain_y is None:
+            return False
+
+        adjacent_tiles = [
+            (self.fountain_x, self.fountain_y - 2),
+            (self.fountain_x, self.fountain_y + 1),
+            (self.fountain_x - 2, self.fountain_y),
+            (self.fountain_x + 1, self.fountain_y),
+            (self.fountain_x - 1, self.fountain_y - 2),
+            (self.fountain_x - 1, self.fountain_y + 1),
+            (self.fountain_x - 2, self.fountain_y - 1),
+            (self.fountain_x + 1, self.fountain_y - 1)
+        ]
+        return (self.tile_x, self.tile_y) in adjacent_tiles
+
+    def controlla_fontanella(self):
+        if self.is_near_fountain() and self.thirsty:
+            print("Biv.")
+            self.thirsty = False  
 matrice = [
     [3, 7, 7, 7, 7, 7, 7, 3, 3, 3],
     [3, 8, 8, 8, 8, 8, 8, 3, 3, 3],
@@ -179,6 +209,7 @@ run = True
 while run:
     finestra.fill((0, 0, 0))
     mondo.disegna()
+    player.controlla_fontanella()
     player.update()
     pygame.display.update()
     for event in pygame.event.get():
