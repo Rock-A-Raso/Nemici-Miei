@@ -21,10 +21,10 @@ TILE_IMAGES = {
     4: pygame.image.load('assets/[BLOCCHI]/tile_023.png'), # terreno erba media
     5: pygame.image.load('assets/[BLOCCHI]/tile_036.png'), # erba alta
     6: pygame.image.load('assets/[BLOCCHI]/tile_044.png'), # fiori tulipani
-    7: pygame.image.load('assets/[BLOCCHI]/tile_046.png'), # fiori misti
+    7: pygame.image.load('assets/[BLOCCHI]/tile_105.png'), # mare bordo destrino
     8: pygame.image.load('assets/[BLOCCHI]/tile_104.png'), # mare no bordi
-    9: pygame.image.load('assets/[BLOCCHI]/tile_112.png'), # mare bordo destra e giù
-    10: pygame.image.load('assets/[BLOCCHI]/tile_107.png'), # mare bordo giù
+    9: pygame.image.load('assets/[BLOCCHI]/tile_109.png'), # mare destra
+    10: pygame.image.load('assets/[BLOCCHI]/tile_106.png'), # mare bordo giù
     11: pygame.image.load('assets/[BLOCCHI]/tile_061.png'), # ciottoli
     12: pygame.image.load('assets/[BLOCCHI]/tile_063.png'), # pietra liscia
     13: pygame.image.load('assets/[BLOCCHI]/tile_064.png'), # pila rocce
@@ -32,12 +32,19 @@ TILE_IMAGES = {
     15: pygame.image.load('assets/[BLOCCHI]/tile_053.png'), # roccia arancione
     16: pygame.image.load('assets/[BLOCCHI]/tile_049.png'), # pila tronchi
     17: pygame.image.load('assets/[BLOCCHI]/tile_050.png'), # tronco
-    18: pygame.image.load('assets/[BLOCCHI]/fontanella.png') # fontanella test
+    18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'), # fontanella test
 }
 
-class HUD():
-    def __init__(self):
-        pass
+# classe Giocatore
+class Giocatore():
+    def __init__(self, x, y):
+        img = pygame.image.load('assets/player/walk-0.png')
+        self.image = pygame.transform.scale(img, (GRANDEZZA_TILES, GRANDEZZA_TILES))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.vel_y = 0
+        self.salto = False
 
 class Mondo():
     def __init__(self, matrice):
@@ -49,7 +56,7 @@ class Mondo():
                 if tile in TILE_IMAGES:
                     iso_x = (cal_cont - riga_cont) * (GRANDEZZA_TILES // 2)
                     iso_y = (cal_cont + riga_cont) * (GRANDEZZA_TILES // 4)
-                    
+
                     if tile == 18:
                         img_sotto = pygame.transform.scale(TILE_IMAGES[3], (GRANDEZZA_TILES, GRANDEZZA_TILES))
                         img_sotto_ratt = img_sotto.get_rect(topleft=(iso_x, iso_y))
@@ -72,9 +79,9 @@ class Mondo():
 
 # Istanza del mondo
 matrice = [
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 18, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 9, 7, 7, 7, 7, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 10, 8, 8, 8, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 10, 8, 8, 8, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
