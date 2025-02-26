@@ -35,16 +35,52 @@ TILE_IMAGES = {
     18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'), # fontanella test
 }
 
-# classe Giocatore
+# Classe Giocatore
 class Giocatore():
     def __init__(self, x, y):
-        img = pygame.image.load('assets/player/walk-0.png')
+        img = pygame.image.load('assets/[BLOCCHI]/fontanella.png')
         self.image = pygame.transform.scale(img, (GRANDEZZA_TILES, GRANDEZZA_TILES))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.vel_y = 0
         self.salto = False
+
+    def update(self):
+        deltax = 0
+        deltay = 0
+
+        # Controlli
+        tasti = pygame.key.get_pressed()
+        if tasti[pygame.K_LEFT]:
+            deltax -= 5
+        if tasti[pygame.K_RIGHT]:
+            deltax += 5
+        if tasti[pygame.K_UP] and not self.salto:
+            self.vel_y = -15
+            self.salto = True
+        if not tasti[pygame.K_UP]:
+            self.salto = False
+
+        # Fisica della gravità
+        GRAVITA = 1
+        self.vel_y += GRAVITA
+        if self.vel_y > 10:
+            self.vel_y = 10
+        deltay += self.vel_y
+
+        # Aggiorna posizione
+        self.rect.x += deltax
+        self.rect.y += deltay
+
+        # Collisione con il bordo inferiore
+        if self.rect.bottom > ALTEZZA:
+            self.rect.bottom = ALTEZZA
+            deltay = 0
+
+        # Disegna il giocatore
+        finestra.blit(self.image, self.rect)
+
 
 class Mondo():
     def __init__(self, matrice):
@@ -77,6 +113,8 @@ class Mondo():
         for img, img_ratt in self.lista_fontanelle:  # Disegna la fontanella sopra il terreno
             finestra.blit(img, img_ratt)
 
+giocatore = Giocatore(200, 500)  # Modifica le coordinate secondo necessità
+
 # Istanza del mondo
 matrice = [
     [3, 3, 9, 7, 7, 7, 7, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -99,6 +137,7 @@ run = True
 while run:
     finestra.fill((0, 0, 0))  # Sfondo nero
     mondo.disegna()
+    giocatore.update()
     pygame.display.update()
     
     for event in pygame.event.get():
