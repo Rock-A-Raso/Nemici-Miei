@@ -86,12 +86,26 @@ class Mondo():
     def __init__(self, matrice):
         self.lista_tiles = []
         self.lista_fontanelle = []
-        
+
+        # calcolo numero di celle totali nella finestra di gioco
+        celle_x = LUNGHEZZA//GRANDEZZA_TILES
+        celle_y = ALTEZZA//GRANDEZZA_TILES
+
+        # centro finestra
+        centro_finestra_x = LUNGHEZZA//2
+        centro_finestra_y = ALTEZZA//2
+
+        # centro matrice 
+        num_righe = len(matrice)
+        num_colonne = len(matrice[0])
+        centro_matrice_x = (num_colonne - 1 - (num_righe - 1)) * (GRANDEZZA_TILES // 2) // 2
+        centro_matrice_y = (num_colonne - 1 + (num_righe - 1)) * (GRANDEZZA_TILES // 4) // 2
+
         for riga_cont, riga in enumerate(matrice):
             for cal_cont, tile in enumerate(riga):
                 if tile in TILE_IMAGES:
-                    iso_x = (cal_cont - riga_cont) * (GRANDEZZA_TILES // 2)
-                    iso_y = (cal_cont + riga_cont) * (GRANDEZZA_TILES // 4)
+                    iso_x = (cal_cont - riga_cont) * (GRANDEZZA_TILES // 2) + centro_finestra_x - centro_matrice_x
+                    iso_y = (cal_cont + riga_cont) * (GRANDEZZA_TILES // 4) + centro_finestra_y - centro_matrice_y
 
                     if tile in [7, 8, 9, 10]:  
                         iso_y -= 10  
@@ -121,17 +135,18 @@ giocatore = Giocatore(200, 500)  # Modifica le coordinate secondo necessità
 
 # Istanza del mondo
 matrice = [
-    [3, 3, 9, 7, 7, 7, 7, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 10, 8, 8, 8, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 10, 8, 8, 8, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 7, 7, 7, 7, 7, 7, 3, 3, 3],
+    [3, 8, 8, 8, 8, 8, 8, 3, 3, 3],
+    [3, 8, 8, 8, 8, 8, 8, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
 ]
+
 
 mondo = Mondo(matrice)
 clock = pygame.time.Clock()
