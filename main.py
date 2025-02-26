@@ -31,7 +31,7 @@ TILE_IMAGES = {
     15: pygame.image.load('assets/[BLOCCHI]/tile_053.png'),  # roccia arancione
     16: pygame.image.load('assets/[BLOCCHI]/tile_049.png'),  # pila tronchi
     17: pygame.image.load('assets/[BLOCCHI]/tile_050.png'),  # tronco
-    18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'),  # fontanella (tile speciale)
+    18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'),  # fontanella 
     19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),  # terreno erba non camminabile
 }
 
@@ -116,8 +116,8 @@ class Giocatore():
         self.tile_y = tile_y
         screen_x, screen_y = mondo.tile_to_screen(tile_x, tile_y)
         bottom_center = (screen_x + GRANDEZZA_TILES//2, screen_y + GRANDEZZA_TILES//2)
-        img = pygame.image.load('assets/[BLOCCHI]/fontanella.png')
-        self.image = pygame.transform.scale(img, (GRANDEZZA_TILES, GRANDEZZA_TILES))
+        img = pygame.image.load('assets/[PERSONAGGIO]/walkd1.png')
+        self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 8
