@@ -1,4 +1,3 @@
-# world.py
 import pygame
 import random
 import assets

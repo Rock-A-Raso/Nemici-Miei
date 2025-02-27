@@ -1,4 +1,3 @@
-# main.py
 import pygame
 from pygame.locals import QUIT
 from pygame import mixer

@@ -1,5 +1,5 @@
-# player.py
 import pygame
+import random
 import assets
 from settings import GRANDEZZA_TILES
 from pygame.locals import *
@@ -65,7 +65,8 @@ class Giocatore:
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
                 if self.in_movimento:
-                    assets.grass_sound.play(maxtime=300, fade_ms=50)
+                    # Scegliamo un suono casuale dalla lista
+                    random.choice(assets.grass_sounds).play(maxtime=300, fade_ms=50)
 
             if not self.in_movimento:
                 self.idle()

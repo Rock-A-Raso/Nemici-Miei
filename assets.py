@@ -2,20 +2,27 @@
 import pygame
 from pygame import mixer
 
-# Variabili globali da usare in altri moduli
-grass_sound = None
+grass_sounds = []  # Lista che conterrà i suoni dell'erba
 TILE_IMAGES = {}
 PLAYER_FRAMES = {}
 PLAYER_IDLE = {}
 
 def load_assets():
-    global grass_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE
+    global grass_sounds, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE
 
-    # Carica la musica e il suono degli erba
+    # Carica la musica di sottofondo
     mixer.music.load('assets/audio/Chill House.mp3')
     mixer.music.set_volume(0.1)
-    grass_sound = mixer.Sound('assets/audio/grass-001.mp3')
-    grass_sound.set_volume(0.01)
+    
+    # Carica i suoni dell'erba (settiamo il volume per ciascuno)
+    grass_sounds = [
+        mixer.Sound('assets/audio/grass-001.mp3'),
+        mixer.Sound('assets/audio/grass-002.mp3'),
+        mixer.Sound('assets/audio/grass-003.mp3'),
+        mixer.Sound('assets/audio/grass-004.mp3')
+    ]
+    for sound in grass_sounds:
+        sound.set_volume(0.01)
 
     # Carica le immagini dei tile
     TILE_IMAGES = {
