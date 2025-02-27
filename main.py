@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from pygame import mixer
 import random
 
 
@@ -13,6 +14,12 @@ FPS = 60
 #finestra di gioco
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
+
+# carica suoni
+mixer.music.load('assets/audio/loop1_dungeon.mp3')
+mixer.music.set_volume(1)
+grass_sound = mixer.Sound('assets/audio/grass-001.mp3')
+grass_sound.set_volume(0.1)
 
 # Caricamento immagini
 TILE_IMAGES = {
@@ -47,12 +54,25 @@ PLAYER_FRAMES = {
         pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd4.png')
     ],
     "up": [
-        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png'), True, False),
-        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd2.png'), True, False),
-        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd3.png'), True, False),
-        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd4.png'), True, False)
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[UP]/walku1.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[UP]/walku2.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[UP]/walku3.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[UP]/walku4.png')
+    ],
+    "left": [
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[LEFT]/walkl1.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[LEFT]/walkl2.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[LEFT]/walkl3.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[LEFT]/walkl4.png')
+    ],
+    "right": [
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[RIGHT]/walkr1.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[RIGHT]/walkr2.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[RIGHT]/walkr3.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[RIGHT]/walkr4.png')
     ]
 }
+
 
 # tile camminabili
 WALKABLE_TILES = {1,2,3,4,5,6,11,12,13,14,15,16,17}
@@ -177,22 +197,28 @@ class Giocatore():
             if tasti[pygame.K_a]:
                 new_tile_x -= 1
                 self.direction = "left"
+                self.in_movimento = True
             if tasti[pygame.K_d]:
                 new_tile_x += 1
                 self.direction = "right"
+                self.in_movimento = True
             if tasti[pygame.K_w]:
                 new_tile_y -= 1
                 self.direction = "up"
+                self.in_movimento = True
             if tasti[pygame.K_s]:
                 new_tile_y += 1
                 self.direction = "down"
+                self.in_movimento = True
             if self.mondo.is_tile_walkable(new_tile_x, new_tile_y):
                 self.tile_x, self.tile_y = new_tile_x, new_tile_y
                 screen_x, screen_y = self.mondo.tile_to_screen(new_tile_x, new_tile_y)
                 bottom_center = (screen_x + GRANDEZZA_TILES//2, screen_y + GRANDEZZA_TILES//2)
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
-                self.in_movimento = True
+                if self.in_movimento:  
+                    grass_sound.play(maxtime=300, fade_ms=50)
+
         
         self.image = PLAYER_FRAMES[self.direction][self.frame_index]
         finestra.blit(self.image, self.rect)
@@ -241,6 +267,7 @@ player = Giocatore(0, 0, mondo)
 
 clock = pygame.time.Clock()
 run = True
+mixer.music.play(loops=-1)
 
 while run:
     finestra.fill((0, 0, 0))
