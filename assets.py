@@ -83,9 +83,10 @@ def load_assets():
             pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[UP]/idle2.png')
         ],
         "left": [
-            pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[LEFT]/walkl1.png'),
+            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[LEFT]/idle1.png')
         ],
         "right": [
-            pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[RIGHT]/walkr1.png'),
+            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[RIGHT]/idle1.png')
         ],
     }
+

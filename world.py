@@ -16,6 +16,9 @@ class Mondo:
         self.lista_fiori = []  # Lista per i fiori
         self.lista_log = []    # Lista per i tronchi
         self.finestra = finestra
+        self.sfondo = pygame.image.load('assets/[SFONDI]/bg.png')  # Cambia il percorso con il tuo file
+        self.sfondo = pygame.transform.scale(self.sfondo, (LUNGHEZZA, self.finestra.get_height()))
+
 
         # Definizione degli offset per il rendering isometrico
         self.offset_x = LUNGHEZZA // 2
@@ -77,6 +80,7 @@ class Mondo:
         return False
 
     def disegna(self):
+        self.finestra.blit(self.sfondo, (0, 0))  # Disegna prima lo sfondo
         for img, rect in self.lista_tiles:
             self.finestra.blit(img, rect)
         for img, rect in self.lista_fontanelle:
