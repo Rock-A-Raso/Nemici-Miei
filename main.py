@@ -16,8 +16,8 @@ finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
 
 # carica suoni
-mixer.music.load('assets/audio/loop1_dungeon.mp3')
-mixer.music.set_volume(1)
+mixer.music.load('assets/audio/Chill House.mp3')
+mixer.music.set_volume(0.5)
 grass_sound = mixer.Sound('assets/audio/grass-001.mp3')
 grass_sound.set_volume(0.1)
 
@@ -45,7 +45,7 @@ TILE_IMAGES = {
 }
 
 #ANIMAZIONI PLAYER
-# ANIMAZIONI PLAYER
+
 PLAYER_FRAMES = {
     "down": [
         pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png'),
@@ -73,6 +73,24 @@ PLAYER_FRAMES = {
     ]
 }
 
+PLAYER_IDLE = {
+    "down": [
+        pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[DOWN]/idle1.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[DOWN]/idle2.png')
+    ],
+    "up": [
+        pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[UP]/idle1.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[UP]/idle2.png')
+    ],
+    "left": [
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[LEFT]/walkl1.png'),
+    ],
+    "right": [
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[RIGHT]/walkr1.png'),
+    ],
+}
+
+
 
 # tile camminabili
 WALKABLE_TILES = {1,2,3,4,5,6,11,12,13,14,15,16,17}
@@ -85,6 +103,7 @@ class Mondo():
         self.lista_tiles = []
         self.lista_fontanelle = []
         self.lista_fiori = []  # Lista per i fiori
+        self.lista_log = []  # Lista per i tronchi
 
         # Definizione degli offset per il rendering isometrico
         self.offset_x = LUNGHEZZA // 2  # Centra la mappa orizzontalmente
@@ -111,10 +130,17 @@ class Mondo():
                         self.lista_tiles.append((img, rect))
                         
                         # Generazione casuale dei fiori sui pezzi di erba
-                        if tile_val in [3, 4, 5] and random.random() < 0.1:  # 30% di probabilità di spawn
+                        if tile_val in [3, 4, 5 ,] and random.random() < 0.1:  # 30% di probabilità di spawn
                             img_fiore = pygame.transform.scale(TILE_IMAGES[6], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
                             rect_fiore = img_fiore.get_rect(center=(screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES // 2))
                             self.lista_fiori.append((img_fiore, rect_fiore))
+
+                        # Generazione casuale dei log sui pezzi di erba
+                        if tile_val in [3,4,5,] and random.random() < 0.05 :
+                            img_log = pygame.transform.scale(TILE_IMAGES[16], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+                            rect_log = img_log.get_rect(center=(screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES // 2))  
+                            self.lista_log.append((img_log, rect_log))
+
 
 
     def tile_to_screen(self, tile_x, tile_y):
@@ -143,6 +169,8 @@ class Mondo():
         for img, rect in self.lista_fontanelle:
             finestra.blit(img, rect)
         for img, rect in self.lista_fiori:
+            finestra.blit(img, rect)
+        for img, rect in self.lista_log:
             finestra.blit(img, rect)
     
     def trova_fontanella(self):
@@ -219,15 +247,37 @@ class Giocatore():
                 if self.in_movimento:  
                     grass_sound.play(maxtime=300, fade_ms=50)
 
+
+            if not self.in_movimento:
+                self.idle()
+            else:
+                self.image = PLAYER_FRAMES[self.direction][self.frame_index]
+            finestra.blit(self.image, self.rect)
+
         
         self.image = PLAYER_FRAMES[self.direction][self.frame_index]
         finestra.blit(self.image, self.rect)
-    
+    #animazioni
     def animate(self):
         self.frame_counter += 1
         if self.frame_counter >= 15:  # Cambia frame ogni 5 tick
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(PLAYER_FRAMES[self.direction])
+    #idle
+    def idle(self):
+        if self.direction not in PLAYER_IDLE:
+            self.direction = "down"  # Fallback di sicurezza
+
+        if self.frame_index >= len(PLAYER_IDLE[self.direction]):
+            self.frame_index = 0  # Evita accessi fuori indice
+
+        self.frame_counter += 1
+        if self.frame_counter >= 30:
+            self.frame_counter = 0
+            self.frame_index = (self.frame_index + 1) % len(PLAYER_IDLE[self.direction])
+
+        self.image = PLAYER_IDLE[self.direction][self.frame_index]
+        finestra.blit(self.image, self.rect)
 
     def is_near_fountain(self):
         if self.fountain_x is None or self.fountain_y is None:
