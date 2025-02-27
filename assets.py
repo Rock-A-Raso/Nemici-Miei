@@ -11,15 +11,12 @@ def load_assets():
     global grass_sounds, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE
 
     # Carica la musica di sottofondo
-    mixer.music.load('assets/audio/Chill House.mp3')
+    mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(0.1)
     
     # Carica i suoni dell'erba (settiamo il volume per ciascuno)
     grass_sounds = [
         mixer.Sound('assets/audio/grass-001.mp3'),
-        mixer.Sound('assets/audio/grass-002.mp3'),
-        mixer.Sound('assets/audio/grass-003.mp3'),
-        mixer.Sound('assets/audio/grass-004.mp3')
     ]
     for sound in grass_sounds:
         sound.set_volume(0.01)
