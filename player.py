@@ -25,6 +25,18 @@ class Giocatore:
         self.frame_index = 0
         self.frame_counter = 0
 
+        # Aggiunta delle statistiche per la HUD
+        self.vita = 100
+        self.vita_max = 100
+        self.monete = 0
+        self.level = 1
+        self.exp = 0
+        self.next_level_exp = 100
+        
+        self.direction = "down"
+        self.frame_index = 0
+        self.frame_counter = 0
+
     def update(self):
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
@@ -111,6 +123,8 @@ class Giocatore:
         return (self.tile_x, self.tile_y) in adjacent_tiles
 
     def controlla_fontanella(self):
-        if self.is_near_fountain() and self.thirsty:
-            print("Biv.")
+        keys = pygame.key.get_pressed()
+        if self.is_near_fountain() and self.thirsty and keys[pygame.K_e]:
+            self.monete += 1
+            print("Bivenn e truat na monetin.")
             self.thirsty = False
