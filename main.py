@@ -1,5 +1,7 @@
 import pygame
 from pygame.locals import *
+import random
+
 
 pygame.init()
 
@@ -8,7 +10,7 @@ ALTEZZA = 720
 LUNGHEZZA = 960
 GRANDEZZA_TILES = 72
 FPS = 60
-
+#finestra di gioco
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
 
@@ -35,6 +37,23 @@ TILE_IMAGES = {
     19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),  # terreno erba non camminabile
 }
 
+#ANIMAZIONI PLAYER
+# ANIMAZIONI PLAYER
+PLAYER_FRAMES = {
+    "down": [
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd2.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd3.png'),
+        pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd4.png')
+    ],
+    "up": [
+        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png'), True, False),
+        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd2.png'), True, False),
+        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd3.png'), True, False),
+        pygame.transform.flip(pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd4.png'), True, False)
+    ]
+}
+
 # tile camminabili
 WALKABLE_TILES = {1,2,3,4,5,6,11,12,13,14,15,16,17}
 
@@ -43,40 +62,40 @@ class Mondo():
         self.matrice = matrice
         self.num_righe = len(matrice)
         self.num_colonne = len(matrice[0])
-        # Calcola il bounding box della mappa isometrica
-        min_x = (0 - (self.num_righe - 1)) * (GRANDEZZA_TILES // 2)
-        max_x = ((self.num_colonne - 1) - 0) * (GRANDEZZA_TILES // 2) + GRANDEZZA_TILES
-        min_y = 0
-        max_y = ((self.num_colonne - 1) + (self.num_righe - 1)) * (GRANDEZZA_TILES // 4) + GRANDEZZA_TILES
-        center_x = (min_x + max_x) // 2
-        center_y = (min_y + max_y) // 2
-        self.offset_x = LUNGHEZZA // 2 - center_x
-        self.offset_y = ALTEZZA // 2 - center_y
-
         self.lista_tiles = []
         self.lista_fontanelle = []
+        self.lista_fiori = []  # Lista per i fiori
+
+        # Definizione degli offset per il rendering isometrico
+        self.offset_x = LUNGHEZZA // 2  # Centra la mappa orizzontalmente
+        self.offset_y = 100  # Offset verticale per il posizionamento
+
         for riga in range(self.num_righe):
             for col in range(self.num_colonne):
                 tile_val = self.matrice[riga][col]
                 if tile_val in TILE_IMAGES:
                     screen_x, screen_y = self.tile_to_screen(col, riga)
-                    # regola l'offset verticale
-                    if tile_val in [7,8,9,10]:
+                    if tile_val in [7, 8, 9, 10]:
                         screen_y -= 10
                     if tile_val == 18:
-                        # disegna il terreno
                         img_ground = pygame.transform.scale(TILE_IMAGES[3], (GRANDEZZA_TILES, GRANDEZZA_TILES))
                         rect_ground = img_ground.get_rect(topleft=(screen_x, screen_y))
                         self.lista_tiles.append((img_ground, rect_ground))
-                        # disegna la fontanella
                         img_font = pygame.transform.scale(TILE_IMAGES[tile_val], (100, 100))
-                        bottom_center = (screen_x + GRANDEZZA_TILES//2, screen_y + GRANDEZZA_TILES//2)
+                        bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES // 2)
                         rect_font = img_font.get_rect(midbottom=bottom_center)
                         self.lista_fontanelle.append((img_font, rect_font))
                     else:
                         img = pygame.transform.scale(TILE_IMAGES[tile_val], (GRANDEZZA_TILES, GRANDEZZA_TILES))
                         rect = img.get_rect(topleft=(screen_x, screen_y))
                         self.lista_tiles.append((img, rect))
+                        
+                        # Generazione casuale dei fiori sui pezzi di erba
+                        if tile_val in [3, 4, 5] and random.random() < 0.1:  # 30% di probabilità di spawn
+                            img_fiore = pygame.transform.scale(TILE_IMAGES[6], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+                            rect_fiore = img_fiore.get_rect(center=(screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES // 2))
+                            self.lista_fiori.append((img_fiore, rect_fiore))
+
 
     def tile_to_screen(self, tile_x, tile_y):
         screen_x = (tile_x - tile_y) * (GRANDEZZA_TILES // 2) + self.offset_x
@@ -103,13 +122,16 @@ class Mondo():
             finestra.blit(img, rect)
         for img, rect in self.lista_fontanelle:
             finestra.blit(img, rect)
+        for img, rect in self.lista_fiori:
+            finestra.blit(img, rect)
     
     def trova_fontanella(self):
         for riga in range(self.num_righe):
             for col in range(self.num_colonne):
                 if self.matrice[riga][col] == 18:
                     return col, riga  
-    
+        return None, None  # Restituisci un valore di default se non ci sono fontanelle
+
 
 ###############################################################################
 # Classe Giocatore: il movimento avviene tile per tile. Il personaggio
@@ -123,18 +145,19 @@ class Giocatore():
         self.tile_y = tile_y
         screen_x, screen_y = mondo.tile_to_screen(tile_x, tile_y)
         bottom_center = (screen_x + GRANDEZZA_TILES//2, screen_y + GRANDEZZA_TILES//2)
-        img = pygame.image.load('assets/[PERSONAGGIO]/walkd1.png')
-        self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+        img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
+        self.image = pygame.transform.scale(img, (GRANDEZZA_TILES / 2, GRANDEZZA_TILES / 2))  # Raddoppia la dimensione
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 8
         self.in_movimento = False
         self.fountain_x, self.fountain_y = mondo.trova_fontanella()
         self.thirsty = True
-
+        self.direction = "down"  # AGGIUNTO: Imposta una direzione predefinita
+        self.frame_index = 0  # AGGIUNTO: Tiene traccia dell'animazione
+        self.frame_counter = 0  # AGGIUNTO: Conta i tick per l'animaziones
 
     def update(self):
-        # se non ha ancora raggiunto la destinazione, continua a muoversi
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -146,18 +169,23 @@ class Giocatore():
                 self.rect.y += self.velocita if dy > 0 else -self.velocita
                 if abs(dy) < self.velocita:
                     self.rect.y = self.dest_y
+            self.animate()
         else:
             self.in_movimento = False
             tasti = pygame.key.get_pressed()
             new_tile_x, new_tile_y = self.tile_x, self.tile_y
             if tasti[pygame.K_a]:
                 new_tile_x -= 1
+                self.direction = "left"
             if tasti[pygame.K_d]:
                 new_tile_x += 1
+                self.direction = "right"
             if tasti[pygame.K_w]:
                 new_tile_y -= 1
+                self.direction = "up"
             if tasti[pygame.K_s]:
                 new_tile_y += 1
+                self.direction = "down"
             if self.mondo.is_tile_walkable(new_tile_x, new_tile_y):
                 self.tile_x, self.tile_y = new_tile_x, new_tile_y
                 screen_x, screen_y = self.mondo.tile_to_screen(new_tile_x, new_tile_y)
@@ -165,7 +193,15 @@ class Giocatore():
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
                 self.in_movimento = True
+        
+        self.image = PLAYER_FRAMES[self.direction][self.frame_index]
         finestra.blit(self.image, self.rect)
+    
+    def animate(self):
+        self.frame_counter += 1
+        if self.frame_counter >= 15:  # Cambia frame ogni 5 tick
+            self.frame_counter = 0
+            self.frame_index = (self.frame_index + 1) % len(PLAYER_FRAMES[self.direction])
 
     def is_near_fountain(self):
         if self.fountain_x is None or self.fountain_y is None:
@@ -189,14 +225,14 @@ class Giocatore():
             self.thirsty = False  
 matrice = [
     [3, 7, 7, 7, 7, 7, 7, 3, 3, 3],
-    [3, 8, 8, 8, 8, 8, 8, 3, 3, 3],
+    [4, 8, 8, 8, 8, 8, 8, 3, 3, 3],
     [3, 3, 8, 8, 8, 8, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 19, 19, 3, 3, 3, 3],
-    [3, 3, 3, 3, 19, 18, 3, 3, 3, 3],
+    [3, 3, 3, 3, 19, 19, 4, 3, 3, 3],
+    [3, 3, 4, 3, 19, 18, 4, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 4, 3, 3, 3, 4, 3],
+    [3, 3, 3, 4, 3, 3, 3, 3, 3, 3],
     [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
 ]
 
