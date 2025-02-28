@@ -26,7 +26,7 @@ def load_assets():
 
     # carica i souni della moneta
     coin_sound = mixer.Sound('assets/audio/coin.mp3')
-    coin_sound.set_volume(0.1)
+    coin_sound.set_volume(0.2)
 
     # Carica le immagini dei tile
     TILE_IMAGES = {

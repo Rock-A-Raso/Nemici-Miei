@@ -1,9 +1,7 @@
-# mondo.py
 import pygame
 import random
 import assets
-from settings import GRANDEZZA_TILES, OFFSET_Y, LUNGHEZZA
-
+from settings import GRANDEZZA_TILES, LUNGHEZZA, ALTEZZA  # Assicurati di importare ALTEZZA
 # Definizione dei tile camminabili
 WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16, 17, 20}
 
@@ -11,15 +9,47 @@ class Mondo:
     def __init__(self, livello_id, finestra, livelli):
         self.livello_id = livello_id
         self.finestra = finestra
-        self.livelli = livelli  # Assegna il dizionario dei livelli
-        self.sfondo = pygame.image.load('assets/[SFONDI]/bg.png')  # Modifica il percorso se necessario
+        self.livelli = livelli  # Dizionario dei livelli
+        self.sfondo = pygame.image.load('assets/[SFONDI]/bg.png')
         self.sfondo = pygame.transform.scale(self.sfondo, (LUNGHEZZA, self.finestra.get_height()))
         
-        # Offset per il rendering isometrico
-        self.offset_x = LUNGHEZZA // 2
-        self.offset_y = OFFSET_Y
+        # Offset iniziali (saranno ricalcolati)
+        self.offset_x = 0
+        self.offset_y = 0
         
         self.carica_mondo()
+
+    def calcola_offset(self):
+        """
+        Calcola gli offset per centrare il mondo nell'area di gioco, escludendo la HUD.
+        La trasformazione isometrica è:
+        x = (tile_x - tile_y) * (GRANDEZZA_TILES/2)
+        y = (tile_x + tile_y) * (GRANDEZZA_TILES/4)
+        """
+        HUD_HEIGHT = 100  # Altezza della HUD
+        ALTEZZA_eff = ALTEZZA - HUD_HEIGHT  # Altezza effettiva dell'area di gioco
+
+        ncols = self.num_colonne
+        nrows = self.num_righe
+        tile_w = GRANDEZZA_TILES  # Base per le dimensioni dei tile
+
+        # Calcola le coordinate (senza offset) dei quattro angoli del livello
+        angoli = []
+        for (tile_x, tile_y) in [(0, 0), (ncols - 1, 0), (0, nrows - 1), (ncols - 1, nrows - 1)]:
+            x = (tile_x - tile_y) * (tile_w / 2)
+            y = (tile_x + tile_y) * (tile_w / 4)
+            angoli.append((x, y))
+        xs = [p[0] for p in angoli]
+        ys = [p[1] for p in angoli]
+        min_x, max_x = min(xs), max(xs)
+        min_y, max_y = min(ys), max(ys)
+        centro_x = (min_x + max_x) / 2
+        centro_y = (min_y + max_y) / 2
+
+        # Imposta gli offset in modo che il centro del mondo (senza HUD) coincida con il centro dell'area di gioco
+        self.offset_x = LUNGHEZZA / 2 - centro_x
+        self.offset_y = ALTEZZA_eff / 2 - centro_y
+
 
     def carica_mondo(self):
         self.matrice = self.livelli[self.livello_id]
@@ -30,6 +60,9 @@ class Mondo:
         self.lista_fiori = []  # Lista per i fiori
         self.lista_log = []    # Lista per i tronchi
 
+        # Calcola gli offset per centrare il mondo
+        self.calcola_offset()
+
         for riga in range(self.num_righe):
             for col in range(self.num_colonne):
                 tile_val = self.matrice[riga][col]
@@ -38,7 +71,6 @@ class Mondo:
                     if tile_val in [7, 8, 9, 10]:
                         screen_y -= 10
                     if tile_val == 18:
-                        # Disegna il terreno sottostante e poi la fontanella
                         img_ground = pygame.transform.scale(assets.TILE_IMAGES[3], (GRANDEZZA_TILES, GRANDEZZA_TILES))
                         rect_ground = img_ground.get_rect(topleft=(screen_x, screen_y))
                         self.lista_tiles.append((img_ground, rect_ground))
@@ -51,14 +83,11 @@ class Mondo:
                         rect = img.get_rect(topleft=(screen_x, screen_y))
                         self.lista_tiles.append((img, rect))
                         
-                        # Generazione casuale dei fiori sui pezzi di erba
                         if tile_val in [3, 4, 5] and random.random() < 0.1:
                             img_fiore = pygame.transform.scale(assets.TILE_IMAGES[6], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
                             rect_fiore = img_fiore.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
                                                                       screen_y + GRANDEZZA_TILES // 2))
                             self.lista_fiori.append((img_fiore, rect_fiore))
-
-                        # Generazione casuale dei log (tronchi) sui pezzi di erba
                         if tile_val in [3, 4, 5] and random.random() < 0.05:
                             img_log = pygame.transform.scale(assets.TILE_IMAGES[16], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
                             rect_log = img_log.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
@@ -66,8 +95,9 @@ class Mondo:
                             self.lista_log.append((img_log, rect_log))
 
     def tile_to_screen(self, tile_x, tile_y):
-        screen_x = (tile_x - tile_y) * (GRANDEZZA_TILES // 2) + self.offset_x
-        screen_y = (tile_x + tile_y) * (GRANDEZZA_TILES // 4) + self.offset_y
+        # Usa divisione float per maggiore precisione
+        screen_x = (tile_x - tile_y) * (GRANDEZZA_TILES / 2) + self.offset_x
+        screen_y = (tile_x + tile_y) * (GRANDEZZA_TILES / 4) + self.offset_y
         return screen_x, screen_y
 
     def screen_to_tile(self, screen_x, screen_y):

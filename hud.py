@@ -33,6 +33,3 @@ class HUD:
         
         exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, (255,255,255))
         self.finestra.blit(exp_text, (250, ALTEZZA - 30))
-        # Disegna anche un'altra versione dell'exp, se desiderato
-        exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, (255,255,255))
-        self.finestra.blit(exp_text, (450, ALTEZZA - 30))
