@@ -1,28 +1,34 @@
+# mondo.py
 import pygame
 import random
 import assets
-from settings import LUNGHEZZA, GRANDEZZA_TILES, OFFSET_Y
+from settings import GRANDEZZA_TILES, OFFSET_Y, LUNGHEZZA
 
 # Definizione dei tile camminabili
-WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16, 17}
+WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16, 17, 20}
 
 class Mondo:
-    def __init__(self, matrice, finestra):
-        self.matrice = matrice
-        self.num_righe = len(matrice)
-        self.num_colonne = len(matrice[0])
+    def __init__(self, livello_id, finestra, livelli):
+        self.livello_id = livello_id
+        self.finestra = finestra
+        self.livelli = livelli  # Assegna il dizionario dei livelli
+        self.sfondo = pygame.image.load('assets/[SFONDI]/bg.png')  # Modifica il percorso se necessario
+        self.sfondo = pygame.transform.scale(self.sfondo, (LUNGHEZZA, self.finestra.get_height()))
+        
+        # Offset per il rendering isometrico
+        self.offset_x = LUNGHEZZA // 2
+        self.offset_y = OFFSET_Y
+        
+        self.carica_mondo()
+
+    def carica_mondo(self):
+        self.matrice = self.livelli[self.livello_id]
+        self.num_righe = len(self.matrice)
+        self.num_colonne = len(self.matrice[0])
         self.lista_tiles = []
         self.lista_fontanelle = []
         self.lista_fiori = []  # Lista per i fiori
         self.lista_log = []    # Lista per i tronchi
-        self.finestra = finestra
-        self.sfondo = pygame.image.load('assets/[SFONDI]/bg.png')  # Cambia il percorso con il tuo file
-        self.sfondo = pygame.transform.scale(self.sfondo, (LUNGHEZZA, self.finestra.get_height()))
-
-
-        # Definizione degli offset per il rendering isometrico
-        self.offset_x = LUNGHEZZA // 2
-        self.offset_y = OFFSET_Y
 
         for riga in range(self.num_righe):
             for col in range(self.num_colonne):
@@ -80,7 +86,7 @@ class Mondo:
         return False
 
     def disegna(self):
-        self.finestra.blit(self.sfondo, (0, 0))  # Disegna prima lo sfondo
+        self.finestra.blit(self.sfondo, (0, 0))
         for img, rect in self.lista_tiles:
             self.finestra.blit(img, rect)
         for img, rect in self.lista_fontanelle:
@@ -96,3 +102,8 @@ class Mondo:
                 if self.matrice[riga][col] == 18:
                     return col, riga  
         return None, None
+
+    def nuovo_livello(self, nuovo_livello):
+        if nuovo_livello in self.livelli:
+            self.livello_id = nuovo_livello
+            self.carica_mondo()

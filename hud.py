@@ -10,7 +10,7 @@ class HUD:
         self.health_icon = pygame.Surface((32, 32))
         self.health_icon.fill((255, 0, 0))  # Rosso per la salute
         self.monete_icon = pygame.Surface((32, 32))
-        self.monete_icon.fill((0, 0, 255))    # Blu per il monete
+        self.monete_icon.fill((0, 0, 255))    # Blu per le monete
 
     def draw(self):
         # Disegna uno sfondo per la HUD nella parte bassa della finestra
@@ -33,6 +33,6 @@ class HUD:
         
         exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, (255,255,255))
         self.finestra.blit(exp_text, (250, ALTEZZA - 30))
-
+        # Disegna anche un'altra versione dell'exp, se desiderato
         exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, (255,255,255))
         self.finestra.blit(exp_text, (450, ALTEZZA - 30))

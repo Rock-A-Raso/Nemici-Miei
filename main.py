@@ -5,33 +5,19 @@ from settings import LUNGHEZZA, ALTEZZA, FPS
 import assets
 from world import Mondo
 from player import Giocatore
-from hud import HUD  # Import della HUD
+from hud import HUD
+from livelli import livelli
 
 pygame.init()
-
 # Crea la finestra di gioco
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
 
-# Carica gli asset (ricorda di aver già chiamato pygame.init())
+# Carica gli asset
 assets.load_assets()
 
-# Definisci la matrice della mappa
-matrice = [
-    [3, 7, 7, 7, 7, 7, 7, 3, 3, 3],
-    [4, 8, 8, 8, 8, 8, 8, 3, 3, 3],
-    [3, 3, 8, 8, 8, 8, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 19, 19, 4, 3, 3, 3],
-    [3, 3, 4, 3, 19, 18, 4, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 4, 3, 3, 3, 4, 3],
-    [3, 3, 3, 4, 3, 3, 3, 3, 3, 3],
-    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-]
-
-# Crea il mondo e il giocatore
-mondo = Mondo(matrice, finestra)
+# Crea il mondo, il giocatore e la HUD
+mondo = Mondo(1, finestra, livelli)
 player = Giocatore(0, 0, mondo, finestra)
 hud = HUD(finestra, player)  # Creazione della HUD
 

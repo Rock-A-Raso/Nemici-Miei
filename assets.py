@@ -1,6 +1,6 @@
-# assets.py
 import pygame
 from pygame import mixer
+from settings import LUNGHEZZA, ALTEZZA
 
 grass_sounds = []  # Lista che conterrà i suoni dell'erba
 TILE_IMAGES = {}
@@ -8,18 +8,25 @@ PLAYER_FRAMES = {}
 PLAYER_IDLE = {}
 
 def load_assets():
-    global grass_sounds, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE
+    global grass_sounds, coin_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE
 
-    # Carica la musica di sottofondo
+    # carica la musica
     mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(0.1)
+
+    sfondo = pygame.image.load('assets/[SFONDI]/bg.png')
+    sfondo = pygame.transform.scale(sfondo, (LUNGHEZZA, ALTEZZA))
     
-    # Carica i suoni dell'erba (settiamo il volume per ciascuno)
+    # carica i suoni dell'erba 
     grass_sounds = [
         mixer.Sound('assets/audio/grass-001.mp3'),
     ]
     for sound in grass_sounds:
         sound.set_volume(0.01)
+
+    # carica i souni della moneta
+    coin_sound = mixer.Sound('assets/audio/coin.mp3')
+    coin_sound.set_volume(0.1)
 
     # Carica le immagini dei tile
     TILE_IMAGES = {
@@ -42,6 +49,7 @@ def load_assets():
         17: pygame.image.load('assets/[BLOCCHI]/tile_050.png'),
         18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'),
         19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),
+        20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),
     }
 
     # Carica le animazioni di movimento del giocatore
@@ -89,4 +97,3 @@ def load_assets():
             pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[RIGHT]/idle1.png')
         ],
     }
-

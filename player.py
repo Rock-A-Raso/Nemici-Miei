@@ -12,9 +12,9 @@ class Giocatore:
         self.finestra = finestra
 
         screen_x, screen_y = self.mondo.tile_to_screen(tile_x, tile_y)
-        bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES // 2)
+        bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES)
         img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
-        self.image = pygame.transform.scale(img, (int(GRANDEZZA_TILES / 2), int(GRANDEZZA_TILES / 2)))
+        self.image = pygame.transform.scale(img, (int(GRANDEZZA_TILES // 2), int(GRANDEZZA_TILES // 2)))
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 8
@@ -25,19 +25,16 @@ class Giocatore:
         self.frame_index = 0
         self.frame_counter = 0
 
-        # Aggiunta delle statistiche per la HUD
+        # Statistiche per la HUD
         self.vita = 100
         self.vita_max = 100
         self.monete = 0
         self.level = 1
         self.exp = 0
         self.next_level_exp = 100
-        
-        self.direction = "down"
-        self.frame_index = 0
-        self.frame_counter = 0
 
     def update(self):
+        # Movimento verso la destinazione
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -51,6 +48,7 @@ class Giocatore:
                     self.rect.y = self.dest_y
             self.animate()
         else:
+            # Se non ci sono movimenti, controlla l'input
             self.in_movimento = False
             keys = pygame.key.get_pressed()
             new_tile_x, new_tile_y = self.tile_x, self.tile_y
@@ -70,6 +68,7 @@ class Giocatore:
                 new_tile_y += 1
                 self.direction = "down"
                 self.in_movimento = True
+
             if self.mondo.is_tile_walkable(new_tile_x, new_tile_y):
                 self.tile_x, self.tile_y = new_tile_x, new_tile_y
                 screen_x, screen_y = self.mondo.tile_to_screen(new_tile_x, new_tile_y)
@@ -77,22 +76,26 @@ class Giocatore:
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
                 if self.in_movimento:
-                    # Scegliamo un suono casuale dalla lista
                     random.choice(assets.grass_sounds).play(maxtime=300, fade_ms=50)
-
+            # Se non ci sono input di movimento, usa l'animazione idle
             if not self.in_movimento:
                 self.idle()
             else:
                 self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
-            self.finestra.blit(self.image, self.rect)
+
+        if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and self.thirsty == False:
+            self.mondo.nuovo_livello(2)
 
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
-        self.finestra.blit(self.image, self.rect)
+        offset = 15
+        draw_rect = self.rect.copy()
+        draw_rect.y -= offset
+        self.finestra.blit(self.image, draw_rect)
 
     def animate(self):
         self.frame_counter += 1
         if self.frame_counter >= 15:
-            self.frame_counter = 0
+            self.frame_counter = 15
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_FRAMES[self.direction])
     
     def idle(self):
@@ -105,11 +108,9 @@ class Giocatore:
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_IDLE[self.direction])
         self.image = assets.PLAYER_IDLE[self.direction][self.frame_index]
-        self.finestra.blit(self.image, self.rect)
+        # Nota: il blit verrà fatto alla fine di update()
 
     def is_near_fountain(self):
-        if self.fountain_x is None or self.fountain_y is None:
-            return False
         adjacent_tiles = [
             (self.fountain_x, self.fountain_y - 2),
             (self.fountain_x, self.fountain_y + 1),
@@ -128,3 +129,4 @@ class Giocatore:
             self.monete += 1
             print("Bivenn e truat na monetin.")
             self.thirsty = False
+            assets.coin_sound.play()
