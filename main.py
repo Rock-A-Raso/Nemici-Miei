@@ -13,7 +13,7 @@ pygame.init()
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
 
-# Carica gli asset
+# Loading degli assets
 assets.load_assets()
 
 # Crea il mondo, il giocatore e la HUD

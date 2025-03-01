@@ -30,26 +30,27 @@ def load_assets():
 
     # Carica le immagini dei tile
     TILE_IMAGES = {
-        1: pygame.image.load('assets/[BLOCCHI]/tile_000.png'),
-        2: pygame.image.load('assets/[BLOCCHI]/tile_003.png'),
-        3: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),
-        4: pygame.image.load('assets/[BLOCCHI]/tile_023.png'),
-        5: pygame.image.load('assets/[BLOCCHI]/tile_036.png'),
-        6: pygame.image.load('assets/[BLOCCHI]/tile_044.png'),
-        7: pygame.image.load('assets/[BLOCCHI]/tile_105.png'),
-        8: pygame.image.load('assets/[BLOCCHI]/tile_104.png'),
-        9: pygame.image.load('assets/[BLOCCHI]/tile_109.png'),
-        10: pygame.image.load('assets/[BLOCCHI]/tile_106.png'),
-        11: pygame.image.load('assets/[BLOCCHI]/tile_061.png'),
-        12: pygame.image.load('assets/[BLOCCHI]/tile_063.png'),
-        13: pygame.image.load('assets/[BLOCCHI]/tile_064.png'),
-        14: pygame.image.load('assets/[BLOCCHI]/tile_077.png'),
-        15: pygame.image.load('assets/[BLOCCHI]/tile_053.png'),
-        16: pygame.image.load('assets/[BLOCCHI]/tile_049.png'),
-        17: pygame.image.load('assets/[BLOCCHI]/tile_050.png'),
-        18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'),
-        19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),
-        20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),
+        1: pygame.image.load('assets/[BLOCCHI]/tile_000.png'), #     terreno no erba
+        2: pygame.image.load('assets/[BLOCCHI]/tile_003.png'), #     terreno no erba scuro
+        3: pygame.image.load('assets/[BLOCCHI]/tile_022.png'), #     terreno erba
+        4: pygame.image.load('assets/[BLOCCHI]/tile_023.png'), #     terreno erba 2 
+        5: pygame.image.load('assets/[BLOCCHI]/tile_036.png'), #     terreno erba alta
+        6: pygame.image.load('assets/[BLOCCHI]/tile_041.png'), #     fiori
+        7: pygame.image.load('assets/[BLOCCHI]/tile_105.png'), #     mare onda a destra
+        8: pygame.image.load('assets/[BLOCCHI]/tile_104.png'), #     mare no one
+        9: pygame.image.load('assets/[BLOCCHI]/tile_109.png'), #     mare onda destra e sinistra
+        10: pygame.image.load('assets/[BLOCCHI]/tile_106.png'), #    mare onda sinistra
+        11: pygame.image.load('assets/[BLOCCHI]/tile_061.png'), #    ciottoli
+        12: pygame.image.load('assets/[BLOCCHI]/tile_063.png'), #    ciottoli liscio
+        13: pygame.image.load('assets/[BLOCCHI]/tile_064.png'), #    ciottoli pila
+        14: pygame.image.load('assets/[BLOCCHI]/tile_077.png'), #    ciottoli in mare
+        15: pygame.image.load('assets/[BLOCCHI]/tile_053.png'), #    ciottolo arancio
+        16: pygame.image.load('assets/[BLOCCHI]/tile_049.png'), #    legno pila
+        17: pygame.image.load('assets/[BLOCCHI]/tile_050.png'), #    legno singolo
+        18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'), #  autoesplicativo
+        19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'), #    void filler
+        20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'), #    void filler
+        21: pygame.image.load('assets/[BLOCCHI]/tile_044.png'), #    fiori
     }
 
     # Carica le animazioni di movimento del giocatore

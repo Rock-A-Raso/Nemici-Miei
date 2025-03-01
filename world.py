@@ -3,7 +3,7 @@ import random
 import assets
 from settings import GRANDEZZA_TILES, LUNGHEZZA, ALTEZZA  # Assicurati di importare ALTEZZA
 # Definizione dei tile camminabili
-WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16, 17, 20}
+WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16, 17, 20, 21}
 
 class Mondo:
     def __init__(self, livello_id, finestra, livelli):
@@ -59,6 +59,8 @@ class Mondo:
         self.lista_fontanelle = []
         self.lista_fiori = []  # Lista per i fiori
         self.lista_log = []    # Lista per i tronchi
+        self.lista_tulipani = []    # Lista per i tulipani
+        self.lista_ciottoli = []    # Lista per i ciottoli
 
         # Calcola gli offset per centrare il mondo
         self.calcola_offset()
@@ -84,15 +86,26 @@ class Mondo:
                         self.lista_tiles.append((img, rect))
                         
                         if tile_val in [3, 4, 5] and random.random() < 0.1:
-                            img_fiore = pygame.transform.scale(assets.TILE_IMAGES[6], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
-                            rect_fiore = img_fiore.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
+                            img_fiori = pygame.transform.scale(assets.TILE_IMAGES[6], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+                            rect_fiori = img_fiori.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
                                                                       screen_y + GRANDEZZA_TILES // 2))
-                            self.lista_fiori.append((img_fiore, rect_fiore))
+                            self.lista_fiori.append((img_fiori, rect_fiori))
                         if tile_val in [3, 4, 5] and random.random() < 0.05:
-                            img_log = pygame.transform.scale(assets.TILE_IMAGES[16], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+                            img_log = pygame.transform.scale(assets.TILE_IMAGES[17], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
                             rect_log = img_log.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
                                                                   screen_y + GRANDEZZA_TILES // 2))
                             self.lista_log.append((img_log, rect_log))
+                        if tile_val in [3, 4, 5] and random.random() < 0.03:
+                            img_tulipani = pygame.transform.scale(assets.TILE_IMAGES[21], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+                            rect_tulipani = img_tulipani.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
+                                                                  screen_y + GRANDEZZA_TILES // 2))
+                            self.lista_tulipani.append((img_tulipani, rect_tulipani))
+                        if tile_val in [3, 4, 5] and random.random() < 0.02:
+                            img_ciottoli = pygame.transform.scale(assets.TILE_IMAGES[15], (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+                            rect_ciottoli = img_ciottoli.get_rect(center=(screen_x + GRANDEZZA_TILES // 2,
+                                                                  screen_y + GRANDEZZA_TILES // 2))
+                            self.lista_ciottoli.append((img_ciottoli, rect_ciottoli))
+
 
     def tile_to_screen(self, tile_x, tile_y):
         # Usa divisione float per maggiore precisione
@@ -124,6 +137,10 @@ class Mondo:
         for img, rect in self.lista_fiori:
             self.finestra.blit(img, rect)
         for img, rect in self.lista_log:
+            self.finestra.blit(img, rect)
+        for img, rect in self.lista_tulipani:
+            self.finestra.blit(img, rect)
+        for img, rect in self.lista_ciottoli:
             self.finestra.blit(img, rect)
     
     def trova_fontanella(self):
