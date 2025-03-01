@@ -52,19 +52,19 @@ class Giocatore:
             self.in_movimento = False
             keys = pygame.key.get_pressed()
             new_tile_x, new_tile_y = self.tile_x, self.tile_y
-            if keys[pygame.K_a]:
+            if keys[pygame.K_a] or keys[pygame.K_LEFT]:
                 new_tile_x -= 1
                 self.direction = "left"
                 self.in_movimento = True
-            if keys[pygame.K_d]:
+            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
                 new_tile_x += 1
                 self.direction = "right"
                 self.in_movimento = True
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
                 new_tile_y -= 1
                 self.direction = "up"
                 self.in_movimento = True
-            if keys[pygame.K_s]:
+            if keys[pygame.K_s] or keys[pygame.K_DOWN]:
                 new_tile_y += 1
                 self.direction = "down"
                 self.in_movimento = True
