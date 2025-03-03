@@ -15,7 +15,9 @@ class Enemy:
         bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES)
 
         img = pygame.image.load('assets/[MOBS]/[BAT]/[UP]/1.png')
-        self.image = pygame.transform.scale(img, (int(GRANDEZZA_TILES // 2), int(GRANDEZZA_TILES // 2)))
+        self.scale_factor = 1.5  # Modifica questo valore per cambiare la dimensione del nemico
+        new_size = (int(GRANDEZZA_TILES * self.scale_factor), int(GRANDEZZA_TILES * self.scale_factor))
+        self.image = pygame.transform.scale(img, new_size)
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
 
@@ -83,11 +85,15 @@ class Enemy:
             self.dest_y = bottom_center[1] - self.rect.height
             self.in_movimento = True
 
-        self.image = assets.ENEMY_FRAMES[self.direction][self.frame_index]
+        self.animate()
 
     def animate(self):
         self.frame_counter += 1
         if self.frame_counter >= 15:
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.ENEMY_FRAMES[self.direction])
-        self.image = assets.ENEMY_FRAMES[self.direction][self.frame_index]
+
+        frame = assets.ENEMY_FRAMES[self.direction][self.frame_index]
+        new_size = (int(frame.get_width() * self.scale_factor), int(frame.get_height() * self.scale_factor))
+        self.image = pygame.transform.scale(frame, new_size)
+        self.rect = self.image.get_rect(midbottom=self.rect.midbottom)  # Ricalcola la posizione dopo lo scaling

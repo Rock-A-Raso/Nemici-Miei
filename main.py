@@ -15,8 +15,8 @@ pygame.display.set_caption("Rock A' Raso")
 
 assets.load_assets()
 
-tile_x = 5
-tile_y = 5
+tile_x = 0
+tile_y = 0
 tile_x_enemy = 8
 tile_y_enemy = 8
 mondo = Mondo(1, finestra, livelli)

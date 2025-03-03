@@ -102,16 +102,24 @@ def load_assets():
 
     ENEMY_FRAMES = {
         "down": [
-            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[DOWN]/idle1.png')
-            ],
+            pygame.image.load('assets/[MOBS]/[BAT]/[DOWN]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[DOWN]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[DOWN]/3.png')
+        ],
         "up": [
-            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[UP]/idle1.png')
-            ],
+            pygame.image.load('assets/[MOBS]/[BAT]/[UP]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[UP]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[UP]/3.png')
+        ],
         "left": [
-            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[LEFT]/idle1.png')
-            ],
+            pygame.image.load('assets/[MOBS]/[BAT]/[LEFT]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[LEFT]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[LEFT]/3.png')
+        ],
         "right": [
-            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[RIGHT]/idle1.png')
-            ]
+            pygame.image.load('assets/[MOBS]/[BAT]/[LEFT]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[RIGHT]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BAT]/[RIGHT]/3.png')
+        ]
 }
 

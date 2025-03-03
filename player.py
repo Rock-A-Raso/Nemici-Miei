@@ -94,10 +94,16 @@ class Giocatore:
         self.finestra.blit(self.image, draw_rect)
 
     def animate(self):
+        if not self.in_movimento:
+            self.frame_index = 0  # Se è fermo, resetta all'animazione idle
+            return  
+
         self.frame_counter += 1
-        if self.frame_counter >= 15:
-            self.frame_counter = 15
+        if self.frame_counter >= 10:  # Numero di frame prima di cambiare sprite
+            self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_FRAMES[self.direction])
+        
+        self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
     
     def idle(self):
         if self.direction not in assets.PLAYER_IDLE:
