@@ -128,7 +128,7 @@ class Giocatore:
         keys = pygame.key.get_pressed()
         if self.is_near_fountain() and self.thirsty and keys[pygame.K_e]:
             self.monete += 1
-            print("Bivenn e truat na monetin.")
+            print("[Hai trovato una monetina nella fontanella]")
             self.thirsty = False
             assets.coin_sound.play()
 

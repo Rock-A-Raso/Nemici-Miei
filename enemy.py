@@ -14,7 +14,7 @@ class Enemy:
         screen_x, screen_y = self.mondo.tile_to_screen(tile_x, tile_y)
         bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES)
 
-        img = pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[DOWN]/idle1.png')
+        img = pygame.image.load('assets/[MOBS]/[BAT]/[UP]/1.png')
         self.image = pygame.transform.scale(img, (int(GRANDEZZA_TILES // 2), int(GRANDEZZA_TILES // 2)))
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
