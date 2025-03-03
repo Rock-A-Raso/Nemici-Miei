@@ -7,19 +7,22 @@ from world import Mondo
 from player import Giocatore
 from hud import HUD
 from livelli import livelli
+from enemy import Enemy
 
 pygame.init()
-# Crea la finestra di gioco
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
 
-# Loading degli assets
 assets.load_assets()
 
-# Crea il mondo, il giocatore e la HUD
+tile_x = 5
+tile_y = 5
+tile_x_enemy = 8
+tile_y_enemy = 8
 mondo = Mondo(1, finestra, livelli)
-player = Giocatore(0, 0, mondo, finestra)
-hud = HUD(finestra, player)  # Creazione della HUD
+player = Giocatore(tile_x, tile_y, mondo, finestra)
+nemico = Enemy(tile_x_enemy, tile_y_enemy, mondo, finestra, player)
+hud = HUD(finestra, player)
 
 clock = pygame.time.Clock()
 mixer.music.play(loops=-1)
@@ -30,12 +33,14 @@ while run:
     mondo.disegna()
     player.controlla_fontanella()
     player.update()
-    hud.draw()  # Disegna la HUD sopra il resto
+    nemico.update() 
+    hud.draw()  
     pygame.display.update()
 
     for event in pygame.event.get():
         if event.type == QUIT:
             run = False
+
     clock.tick(FPS)
 
 pygame.quit()

@@ -6,9 +6,10 @@ grass_sounds = []  # Lista che conterrà i suoni dell'erba
 TILE_IMAGES = {}
 PLAYER_FRAMES = {}
 PLAYER_IDLE = {}
+ENEMY_FRAMES = {}
 
 def load_assets():
-    global grass_sounds, coin_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE
+    global grass_sounds, coin_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES
 
     # carica la musica
     mixer.music.load('assets/audio/soundtrack.mp3')
@@ -98,3 +99,19 @@ def load_assets():
             pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[RIGHT]/idle1.png')
         ],
     }
+
+    ENEMY_FRAMES = {
+        "down": [
+            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[DOWN]/idle1.png')
+            ],
+        "up": [
+            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[UP]/idle1.png')
+            ],
+        "left": [
+            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[LEFT]/idle1.png')
+            ],
+        "right": [
+            pygame.image.load('assets/[PERSONAGGIO]/[IDLE]/[RIGHT]/idle1.png')
+            ]
+}
+

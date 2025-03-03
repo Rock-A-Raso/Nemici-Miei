@@ -17,7 +17,7 @@ class Giocatore:
         self.image = pygame.transform.scale(img, (int(GRANDEZZA_TILES // 2), int(GRANDEZZA_TILES // 2)))
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
-        self.velocita = 8
+        self.velocita = 4
         self.in_movimento = False
         self.fountain_x, self.fountain_y = self.mondo.trova_fontanella()
         self.thirsty = True
@@ -131,3 +131,8 @@ class Giocatore:
             print("Bivenn e truat na monetin.")
             self.thirsty = False
             assets.coin_sound.play()
+
+    def take_damage(self, amount):
+        self.vita -= amount
+        if self.vita < 0:
+            self.vita = 0
