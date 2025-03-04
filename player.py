@@ -37,7 +37,6 @@ class Giocatore:
         self.attack_cooldown = 500
 
     def update(self):
-        # Se il player non ha ancora raggiunto la destinazione, muovi il rettangolo
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -51,7 +50,6 @@ class Giocatore:
                     self.rect.y = self.dest_y
             self.animate()
         else:
-            # Gestisci l'input per cambiare tile
             self.in_movimento = False
             keys = pygame.key.get_pressed()
             new_tx, new_ty = self.tile_x, self.tile_y
@@ -85,7 +83,6 @@ class Giocatore:
             else:
                 self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
 
-        # Gestione cambio livello, attacco e disegno
         if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and not self.thirsty:
             self.mondo.nuovo_livello(2)
             self.level += 1
