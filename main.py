@@ -11,11 +11,15 @@ from assets import livelli
 from npc import Npc
 from portal import portals
 pygame.init()
+
+# funzione per caricare tutti gli assets
 assets.load_assets()
 
+# schermo
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
 
+# istanze
 mondo = Mondo(1, finestra, livelli)
 player = Giocatore(0, 0, mondo, finestra, None)
 nemico = Enemy(3, 4, mondo, finestra, player)
@@ -26,10 +30,12 @@ hud = HUD(finestra, player, npc)
 
 clock = pygame.time.Clock()
 
+# loop musica
 mixer.music.play(loops=-1)
+
+# loop di gioco
 run = True
 while run:
-    finestra.fill((0, 0, 0))
     mondo.disegna()
     player.controlla_fontanella()
     player.update()

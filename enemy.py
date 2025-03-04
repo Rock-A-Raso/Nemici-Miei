@@ -9,13 +9,16 @@ class Enemy:
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.player = player
+
         sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
         bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES)
+
         img = pygame.image.load('assets/[MOBS]/[BAT]/[UP]/1.png')
         self.scale_factor = 1.5
         new_size = (int(GRANDEZZA_TILES * self.scale_factor), int(GRANDEZZA_TILES * self.scale_factor))
         self.image = pygame.transform.scale(img, new_size)
         self.rect = self.image.get_rect(midbottom=bottom_center)
+
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 2
         self.in_movimento = False
@@ -70,6 +73,7 @@ class Enemy:
             else:
                 new_ty -= 1
                 self.direction = "up"
+                
         if self.mondo.is_tile_walkable(new_tx, new_ty):
             self.tile_x, self.tile_y = new_tx, new_ty
             sx, sy = self.mondo.tile_to_screen(new_tx, new_ty)

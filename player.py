@@ -12,21 +12,30 @@ class Giocatore:
         self.tile_y = tile_y
         self.finestra = finestra
         self.enemy = nemico
+
         img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
         self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
+
+        # posizione in tile a coordinate su schermo
         sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
+
         center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES // 2)
         self.rect = self.image.get_rect(center=center)
         self.dest_x, self.dest_y = self.rect.topleft
         self.rect = self.image.get_rect(midbottom=center)
         self.dest_x, self.dest_y = self.rect.topleft
-        self.velocita = 4
+
+        self.velocita = 4 # pixel per frame
         self.in_movimento = False
+
+        # poszione fontanella
         self.fountain_x, self.fountain_y = self.mondo.trova_fontanella()
         self.thirsty = True
         self.direction = "down"
         self.frame_index = 0
         self.frame_counter = 0
+
+        # stats
         self.vita = 100
         self.vita_max = 100
         self.monete = 0
@@ -37,7 +46,9 @@ class Giocatore:
         self.attack_cooldown = 500
 
     def update(self):
+        # raggiungi destinazione
         if self.rect.topleft != (self.dest_x, self.dest_y):
+            # calcola differenza
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
             if dx:
@@ -51,6 +62,7 @@ class Giocatore:
             self.animate()
         else:
             self.in_movimento = False
+
             keys = pygame.key.get_pressed()
             new_tx, new_ty = self.tile_x, self.tile_y
             if keys[pygame.K_a] or keys[pygame.K_LEFT]:
@@ -69,26 +81,31 @@ class Giocatore:
                 new_ty += 1
                 self.direction = "down"
                 self.in_movimento = True
-
+            
+            # controlla se la destinazione é attraversabile
             if self.mondo.is_tile_walkable(new_tx, new_ty):
                 self.tile_x, self.tile_y = new_tx, new_ty
                 sx, sy = self.mondo.tile_to_screen(new_tx, new_ty)
                 bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES // 2)
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
+
                 if self.in_movimento:
                     random.choice(assets.grass_sounds).play(maxtime=300, fade_ms=50)
+
             if not self.in_movimento:
                 self.idle()
             else:
                 self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
 
+        # cambia livello
         if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and not self.thirsty:
             self.mondo.nuovo_livello(2)
             self.level += 1
 
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
         offset = 15
+
         draw_rect = self.rect.copy()
         draw_rect.y -= offset
 
@@ -96,17 +113,21 @@ class Giocatore:
 
         self.finestra.blit(self.image, draw_rect)
 
-
+    # animazioni
     def animate(self):
         if not self.in_movimento:
             self.frame_index = 0
             return
-        self.frame_counter += 1
+        else:
+            self.frame_counter += 1
+        # cicla frame
         if self.frame_counter >= 10:
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_FRAMES[self.direction])
+        # aggiorna frame
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
 
+    # animazioni quando é fermo
     def idle(self):
         if self.direction not in assets.PLAYER_IDLE:
             self.direction = "down"
@@ -118,6 +139,7 @@ class Giocatore:
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_IDLE[self.direction])
         self.image = assets.PLAYER_IDLE[self.direction][self.frame_index]
 
+    # controlla se il giocatore si trova vicino alla fontanella
     def is_near_fountain(self):
         adjacent = [
             (self.fountain_x, self.fountain_y - 2),
@@ -131,6 +153,7 @@ class Giocatore:
         ]
         return (self.tile_x, self.tile_y) in adjacent
 
+    # controlla l'interazione con la fontanella
     def controlla_fontanella(self):
         keys = pygame.key.get_pressed()
         if self.is_near_fountain() and self.thirsty and keys[pygame.K_e]:
@@ -139,11 +162,13 @@ class Giocatore:
             self.thirsty = False
             assets.coin_sound.play()
 
+    # prende danno
     def take_damage(self, amount):
         self.vita -= amount
         if self.vita < 0:
             self.vita = 0
 
+    # controlla se é vicino ad un npc
     def is_near_npc(self, npc):
         adjacent_npc = [
             (npc.tile_x, npc.tile_y + 1),
@@ -153,6 +178,7 @@ class Giocatore:
         ]
         return (self.tile_x, self.tile_y) in adjacent_npc
     
+    # attacca
     def attacca(self):
         keys = pygame.key.get_pressed()
         current_time = pygame.time.get_ticks()
