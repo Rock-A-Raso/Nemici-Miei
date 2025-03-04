@@ -34,3 +34,7 @@ class HUD:
         self.finestra.blit(level_text, (250, ALTEZZA - 70))
         exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
         self.finestra.blit(exp_text, (250, ALTEZZA - 30))
+        credits_text = self.font.render(f"Realizzato da:", True, BIANCO)
+        self.finestra.blit(credits_text, (650, ALTEZZA - 70))
+        credits_text = self.font.render(f"Rock a' Raso Games", True, ROSSO)
+        self.finestra.blit(credits_text, (650, ALTEZZA - 50))
