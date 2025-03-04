@@ -24,6 +24,7 @@ class Enemy:
         self.frame_counter = 0
         self.last_attack_time = 0
         self.attack_cooldown = 1000
+        self.vita = 50
 
     def update(self):
         if self.rect.topleft != (self.dest_x, self.dest_y):
@@ -87,3 +88,8 @@ class Enemy:
         new_size = (int(frame.get_width() * self.scale_factor), int(frame.get_height() * self.scale_factor))
         self.image = pygame.transform.scale(frame, new_size)
         self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+
+    def take_damage(self, amount):
+        self.vita -= amount
+        if self.vita < 0:
+            self.vita = 0

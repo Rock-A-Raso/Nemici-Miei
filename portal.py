@@ -9,7 +9,7 @@ class portals:
         self.tile_x = tile_x
         self.tile_y = tile_y
         sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
-        bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES)
+        bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES // 2)
         
         img = pygame.image.load('assets/[PORTALE]/portal1.png')
         self.scale_factor = 0.75

@@ -8,20 +8,24 @@ from player import Giocatore
 from hud import HUD
 from enemy import Enemy
 from assets import livelli
-from npc import NPC
+from npc import Npc
 from portal import portals
-
 pygame.init()
+assets.load_assets()
+
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Rock A' Raso")
-assets.load_assets()
+
 mondo = Mondo(1, finestra, livelli)
-player = Giocatore(0, 0, mondo, finestra)
+player = Giocatore(0, 0, mondo, finestra, None)
 nemico = Enemy(3, 4, mondo, finestra, player)
-NPCS = NPC(8, 8, mondo, finestra)
-portale = portals(9, 0.010, mondo, finestra)
-hud = HUD(finestra, player)
+player.enemy = nemico
+npc = Npc(8, 8, mondo, finestra)
+portale = portals(8, 0, mondo, finestra)
+hud = HUD(finestra, player, npc)
+
 clock = pygame.time.Clock()
+
 mixer.music.play(loops=-1)
 run = True
 while run:
@@ -30,8 +34,9 @@ while run:
     player.controlla_fontanella()
     player.update()
     if mondo.livello_id == 1:
-        nemico.update()
-        NPCS.update()
+        if nemico.vita > 0:
+            nemico.update()
+        npc.update()
         portale.update()
     hud.draw()
     pygame.display.update()

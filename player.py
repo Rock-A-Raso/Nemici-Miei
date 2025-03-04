@@ -1,19 +1,24 @@
 import pygame
 import random
 import assets
+from npc import Npc
+from enemy import Enemy
 from settings import GRANDEZZA_TILES
 
 class Giocatore:
-    def __init__(self, tile_x, tile_y, mondo, finestra):
+    def __init__(self, tile_x, tile_y, mondo, finestra, nemico):
         self.mondo = mondo
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.finestra = finestra
-        sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
-        bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES)
+        self.enemy = nemico
         img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
         self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
-        self.rect = self.image.get_rect(midbottom=bottom_center)
+        sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
+        center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES // 2)
+        self.rect = self.image.get_rect(center=center)
+        self.dest_x, self.dest_y = self.rect.topleft
+        self.rect = self.image.get_rect(midbottom=center)
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 4
         self.in_movimento = False
@@ -28,8 +33,11 @@ class Giocatore:
         self.level = 1
         self.exp = 0
         self.next_level_exp = 100
+        self.last_attack_time = 0
+        self.attack_cooldown = 500
 
     def update(self):
+        # Se il player non ha ancora raggiunto la destinazione, muovi il rettangolo
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -43,6 +51,7 @@ class Giocatore:
                     self.rect.y = self.dest_y
             self.animate()
         else:
+            # Gestisci l'input per cambiare tile
             self.in_movimento = False
             keys = pygame.key.get_pressed()
             new_tx, new_ty = self.tile_x, self.tile_y
@@ -62,6 +71,7 @@ class Giocatore:
                 new_ty += 1
                 self.direction = "down"
                 self.in_movimento = True
+
             if self.mondo.is_tile_walkable(new_tx, new_ty):
                 self.tile_x, self.tile_y = new_tx, new_ty
                 sx, sy = self.mondo.tile_to_screen(new_tx, new_ty)
@@ -74,14 +84,21 @@ class Giocatore:
                 self.idle()
             else:
                 self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
+
+        # Gestione cambio livello, attacco e disegno
         if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and not self.thirsty:
             self.mondo.nuovo_livello(2)
             self.level += 1
+
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
         offset = 15
         draw_rect = self.rect.copy()
         draw_rect.y -= offset
+
+        self.attacca()
+
         self.finestra.blit(self.image, draw_rect)
+
 
     def animate(self):
         if not self.in_movimento:
@@ -129,3 +146,22 @@ class Giocatore:
         self.vita -= amount
         if self.vita < 0:
             self.vita = 0
+
+    def is_near_npc(self, npc):
+        adjacent_npc = [
+            (npc.tile_x, npc.tile_y + 1),
+            (npc.tile_x + 1, npc.tile_y),
+            (npc.tile_x - 1, npc.tile_y + 1),
+            (npc.tile_x + 1, npc.tile_y - 1)
+        ]
+        return (self.tile_x, self.tile_y) in adjacent_npc
+    
+    def attacca(self):
+        keys = pygame.key.get_pressed()
+        current_time = pygame.time.get_ticks()
+        if abs(self.tile_x - self.enemy.tile_x) <= 1 and abs(self.tile_y - self.enemy.tile_y) <= 1:
+            if current_time - self.last_attack_time >= self.attack_cooldown:
+                if keys[pygame.K_r]:
+                    self.enemy.take_damage(20)
+                    self.last_attack_time = current_time
+ 
