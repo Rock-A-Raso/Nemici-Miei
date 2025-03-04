@@ -2,7 +2,6 @@ import pygame
 import random
 import assets
 from settings import GRANDEZZA_TILES
-from pygame.locals import *
 
 class Giocatore:
     def __init__(self, tile_x, tile_y, mondo, finestra):
@@ -10,11 +9,10 @@ class Giocatore:
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.finestra = finestra
-
-        screen_x, screen_y = self.mondo.tile_to_screen(tile_x, tile_y)
-        bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES)
+        sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
+        bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES)
         img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
-        self.image = pygame.transform.scale(img, (int(GRANDEZZA_TILES // 2), int(GRANDEZZA_TILES // 2)))
+        self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
         self.rect = self.image.get_rect(midbottom=bottom_center)
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 4
@@ -24,8 +22,6 @@ class Giocatore:
         self.direction = "down"
         self.frame_index = 0
         self.frame_counter = 0
-
-        # Statistiche per la HUD
         self.vita = 100
         self.vita_max = 100
         self.monete = 0
@@ -34,7 +30,6 @@ class Giocatore:
         self.next_level_exp = 100
 
     def update(self):
-        # Movimento verso la destinazione
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -48,45 +43,40 @@ class Giocatore:
                     self.rect.y = self.dest_y
             self.animate()
         else:
-            # Se non ci sono movimenti, controlla l'input
             self.in_movimento = False
             keys = pygame.key.get_pressed()
-            new_tile_x, new_tile_y = self.tile_x, self.tile_y
+            new_tx, new_ty = self.tile_x, self.tile_y
             if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-                new_tile_x -= 1
+                new_tx -= 1
                 self.direction = "left"
                 self.in_movimento = True
             if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-                new_tile_x += 1
+                new_tx += 1
                 self.direction = "right"
                 self.in_movimento = True
             if keys[pygame.K_w] or keys[pygame.K_UP]:
-                new_tile_y -= 1
+                new_ty -= 1
                 self.direction = "up"
                 self.in_movimento = True
             if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-                new_tile_y += 1
+                new_ty += 1
                 self.direction = "down"
                 self.in_movimento = True
-
-            if self.mondo.is_tile_walkable(new_tile_x, new_tile_y):
-                self.tile_x, self.tile_y = new_tile_x, new_tile_y
-                screen_x, screen_y = self.mondo.tile_to_screen(new_tile_x, new_tile_y)
-                bottom_center = (screen_x + GRANDEZZA_TILES // 2, screen_y + GRANDEZZA_TILES // 2)
+            if self.mondo.is_tile_walkable(new_tx, new_ty):
+                self.tile_x, self.tile_y = new_tx, new_ty
+                sx, sy = self.mondo.tile_to_screen(new_tx, new_ty)
+                bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES // 2)
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
                 if self.in_movimento:
                     random.choice(assets.grass_sounds).play(maxtime=300, fade_ms=50)
-            # Se non ci sono input di movimento, usa l'animazione idle
             if not self.in_movimento:
                 self.idle()
             else:
                 self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
-
-        if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and self.thirsty == False:
+        if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and not self.thirsty:
             self.mondo.nuovo_livello(2)
             self.level += 1
-
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
         offset = 15
         draw_rect = self.rect.copy()
@@ -95,16 +85,14 @@ class Giocatore:
 
     def animate(self):
         if not self.in_movimento:
-            self.frame_index = 0  # Se è fermo, resetta all'animazione idle
-            return  
-
+            self.frame_index = 0
+            return
         self.frame_counter += 1
-        if self.frame_counter >= 10:  # Numero di frame prima di cambiare sprite
+        if self.frame_counter >= 10:
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_FRAMES[self.direction])
-        
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
-    
+
     def idle(self):
         if self.direction not in assets.PLAYER_IDLE:
             self.direction = "down"
@@ -115,10 +103,9 @@ class Giocatore:
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_IDLE[self.direction])
         self.image = assets.PLAYER_IDLE[self.direction][self.frame_index]
-        # Nota: il blit verrà fatto alla fine di update()
 
     def is_near_fountain(self):
-        adjacent_tiles = [
+        adjacent = [
             (self.fountain_x, self.fountain_y - 2),
             (self.fountain_x, self.fountain_y + 1),
             (self.fountain_x - 2, self.fountain_y),
@@ -128,7 +115,7 @@ class Giocatore:
             (self.fountain_x - 2, self.fountain_y - 1),
             (self.fountain_x + 1, self.fountain_y - 1)
         ]
-        return (self.tile_x, self.tile_y) in adjacent_tiles
+        return (self.tile_x, self.tile_y) in adjacent
 
     def controlla_fontanella(self):
         keys = pygame.key.get_pressed()
