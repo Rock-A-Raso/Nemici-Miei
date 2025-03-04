@@ -8,6 +8,8 @@ from player import Giocatore
 from hud import HUD
 from enemy import Enemy
 from assets import livelli
+from npc import NPC
+from portal import portals
 
 pygame.init()
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
@@ -16,6 +18,8 @@ assets.load_assets()
 mondo = Mondo(1, finestra, livelli)
 player = Giocatore(0, 0, mondo, finestra)
 nemico = Enemy(3, 4, mondo, finestra, player)
+NPCS = NPC(8, 8, mondo, finestra)
+portale = portals(9, 0.010, mondo, finestra)
 hud = HUD(finestra, player)
 clock = pygame.time.Clock()
 mixer.music.play(loops=-1)
@@ -27,6 +31,8 @@ while run:
     player.update()
     if mondo.livello_id == 1:
         nemico.update()
+        NPCS.update()
+        portale.update()
     hud.draw()
     pygame.display.update()
     for event in pygame.event.get():
@@ -36,3 +42,4 @@ while run:
         run = False
     clock.tick(FPS)
 pygame.quit()
+    
