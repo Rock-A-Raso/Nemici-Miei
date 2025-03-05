@@ -17,7 +17,7 @@ assets.load_assets()
 
 # schermo
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
-pygame.display.set_caption("Rock A' Raso")
+pygame.display.set_caption("Nemici Miei | Rock A' Raso")
 
 # istanze
 mondo = Mondo(1, finestra, livelli)
@@ -38,7 +38,8 @@ run = True
 while run:
     mondo.disegna()
     player.controlla_fontanella()
-    player.update()
+    if player.vita > 0:
+        player.update()
     if mondo.livello_id == 1:
         if nemico.vita > 0:
             nemico.update()
@@ -49,8 +50,6 @@ while run:
     for event in pygame.event.get():
         if event.type == QUIT:
             run = False
-    if player.vita <= 0:
-        run = False
     clock.tick(FPS)
 pygame.quit()
     

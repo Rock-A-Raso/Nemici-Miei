@@ -42,7 +42,7 @@ class HUD:
         if self.player.is_near_npc(self.npc):
             self.npc.dialogo()
             if self.npc.parlando:
-                dialogue_text = self.font.render(f"{self.npc.nome}: CIAO", True, BIANCO)
+                dialogue_text = self.font.render(f"{self.npc.nome}: Come se fosse Antani? Prefettura?", True, BIANCO)
                 self.finestra.blit(dialogue_text, (500, ALTEZZA - 30))
         else:
             self.npc.parlando = False
