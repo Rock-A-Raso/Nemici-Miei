@@ -1,10 +1,11 @@
 import pygame
+from npc import Npc
 from pygame import mixer
 from settings import LUNGHEZZA, ALTEZZA
 
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES
+    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE
 
     mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(1)
@@ -17,7 +18,10 @@ def load_assets():
         sound.set_volume(0.1)
 
     coin_sound = mixer.Sound('assets/audio/coin.mp3')
-    coin_sound.set_volume(2)
+    coin_sound.set_volume(5)
+
+    morte_sound = mixer.Sound('assets/audio/boss_morte.mp3')
+    morte_sound.set_volume(1)
 
     TILE_IMAGES = {
         1: pygame.image.load('assets/[BLOCCHI]/tile_000.png'),    #    terreno no erba
@@ -106,8 +110,24 @@ def load_assets():
         ]
     }
 
+    STRING_DIALOGUE = {
+        "1":
+            "Me: Ci conosciamo?",
+        "2": 
+            "Alan Turing: Non credo...",
+        "3":
+            "Alan Turing: No.. dico..",
+        "4":
+            "Ugo Tognazzi: La supercazzola subatomica..",
+        "5":
+            "Ugo Tognazzi: ..E' bitumata!",
+        "6":
+            "Me: (???) Sara' matto questo.."
+    }
+
 # matrici
 livello_1 = [
+
     [3, 7, 7, 7, 7, 7, 7, 20, 20, 20],
     [4, 8, 8, 8, 8, 8, 8, 3, 3, 3],
     [3, 3, 8, 8, 8, 8, 3, 3, 3, 3],

@@ -41,7 +41,7 @@ class Giocatore:
         self.monete = 0
         self.level = 1
         self.exp = 0
-        self.next_level_exp = 100
+        self.next_level_exp = 10
         self.last_attack_time = 0
         self.attack_cooldown = 500
 
@@ -160,6 +160,7 @@ class Giocatore:
         if self.is_near_fountain() and self.thirsty and keys[pygame.K_e]:
             self.monete += 1
             print("[Hai trovato una monetina nella fontanella]")
+            
             self.thirsty = False
             assets.coin_sound.play()
 

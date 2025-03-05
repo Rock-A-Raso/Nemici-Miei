@@ -1,4 +1,5 @@
 import pygame
+import assets
 from player import Giocatore
 from npc import Npc
 from settings import LUNGHEZZA, ALTEZZA
@@ -19,8 +20,10 @@ class HUD:
         self.monete_icon = pygame.image.load("assets/[ITEMS]/coin.gif")
         self.health_icon = pygame.transform.scale(self.health_icon, (32, 32))
         self.monete_icon = pygame.transform.scale(self.monete_icon, (32, 32))
+        self.dialogue_index = 1
+        self.giaparlato = False
 
-    def draw(self):
+    def draw(self, events):
         hud_rect = pygame.Rect(0, ALTEZZA - 100, LUNGHEZZA, 100)
         pygame.draw.rect(self.finestra, GRIGIO, hud_rect)
         
@@ -34,19 +37,34 @@ class HUD:
 
         level_text = self.font.render(f"Livello: {self.player.level}", True, BIANCO)
         self.finestra.blit(level_text, (250, ALTEZZA - 70))
-
         exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
         self.finestra.blit(exp_text, (250, ALTEZZA - 30))
 
-        keys = pygame.key.get_pressed()
-        if self.player.is_near_npc(self.npc):
-            self.npc.dialogo()
-            if self.npc.parlando:
-                dialogue_text = self.font.render(f"{self.npc.nome}: Come se fosse Antani? Prefettura?", True, BIANCO)
-                self.finestra.blit(dialogue_text, (500, ALTEZZA - 70))
-        else:
-            self.npc.parlando = False
+        self.handle_dialogue(events)
 
-        if (self.player.is_near_fountain() and self.player.thirsty) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) :
-            interazioni_text = self.font.render(f"Premi (E) per interagire.", True, BIANCO)
+        if (self.player.is_near_fountain() and self.player.thirsty) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) and not self.giaparlato:
+            interazioni_text = self.font.render("Premi (E) per interagire.", True, BIANCO)
             self.finestra.blit(interazioni_text, (500, ALTEZZA - 70))
+
+    def handle_dialogue(self, events):
+        if not self.player.is_near_npc(self.npc):
+            self.npc.parlando = False
+            self.dialogue_index = 1
+            return
+
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e and not self.giaparlato:
+                if self.player.is_near_npc(self.npc):
+                    if not self.npc.parlando:
+                        self.npc.parlando = True
+                        self.dialogue_index = 1  
+                    else:
+                        self.dialogue_index += 1
+                        if self.dialogue_index > len(assets.STRING_DIALOGUE):
+                            self.npc.parlando = False
+                            self.giaparlato = True
+
+        if self.npc.parlando:
+            text = assets.STRING_DIALOGUE.get(str(self.dialogue_index), "")
+            dialogue_text = self.font.render(f"{text}", True, BIANCO)
+            self.finestra.blit(dialogue_text, (500, ALTEZZA - 70))

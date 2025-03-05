@@ -13,16 +13,11 @@ class Npc:
         bottom_center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES)
         
         img = pygame.image.load('assets/[NPC]/1.png')
-        self.scale_factor = 0.75
-        new_size = (int(GRANDEZZA_TILES * self.scale_factor), int(GRANDEZZA_TILES * self.scale_factor))
+        self.scale_factor = 1
+        new_size = (int(GRANDEZZA_TILES/2), int(GRANDEZZA_TILES * self.scale_factor))
         self.image = pygame.transform.scale(img, new_size)
         self.rect = self.image.get_rect(midbottom=bottom_center)
-        self.nome = "Npc1"
+        self.nome = "Ugo Tognazzi"
     
     def update(self):
         self.finestra.blit(self.image, self.rect)
-
-    def dialogo(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_e]:
-            self.parlando = True

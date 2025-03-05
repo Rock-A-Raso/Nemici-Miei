@@ -97,3 +97,4 @@ class Enemy:
         self.vita -= amount
         if self.vita < 0:
             self.vita = 0
+            assets.morte_sound.play()

@@ -33,9 +33,14 @@ hud = HUD(finestra, player, npc)
 # loop musica
 mixer.music.play(loops=-1)
 
-# loop di gioco
+# loop principale
 run = True
 while run:
+    events = pygame.event.get()
+    for event in events:
+        if event.type == QUIT:
+            run = False
+
     mondo.disegna()
     player.controlla_fontanella()
     if player.vita > 0:
@@ -45,10 +50,10 @@ while run:
             nemico.update()
         npc.update()
         portale.update()
-    hud.draw()
+
+    hud.draw(events)
+
     pygame.display.update()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            run = False
     clock.tick(FPS)
+
 pygame.quit()
