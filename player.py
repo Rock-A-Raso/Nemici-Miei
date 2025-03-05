@@ -102,7 +102,8 @@ class Giocatore:
         if self.mondo.matrice[self.tile_y][self.tile_x] == 20 and not self.thirsty:
             self.mondo.nuovo_livello(2)
             self.level += 1
-
+            
+        # aggiorna frame player
         self.image = assets.PLAYER_FRAMES[self.direction][self.frame_index]
         offset = 15
 

@@ -14,7 +14,7 @@ class HUD:
         self.finestra = finestra
         self.player = player
         self.npc = npc
-        self.font = pygame.font.Font("assets/DungeonFont.ttf", 24)
+        self.font = pygame.font.Font("assets/ARCADE_N.ttf", 10)
         self.health_icon = pygame.image.load("assets/[ITEMS]/health.png")
         self.monete_icon = pygame.image.load("assets/[ITEMS]/coin.gif")
         self.health_icon = pygame.transform.scale(self.health_icon, (32, 32))
@@ -43,6 +43,10 @@ class HUD:
             self.npc.dialogo()
             if self.npc.parlando:
                 dialogue_text = self.font.render(f"{self.npc.nome}: Come se fosse Antani? Prefettura?", True, BIANCO)
-                self.finestra.blit(dialogue_text, (500, ALTEZZA - 30))
+                self.finestra.blit(dialogue_text, (500, ALTEZZA - 70))
         else:
             self.npc.parlando = False
+
+        if (self.player.is_near_fountain() and self.player.thirsty) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) :
+            interazioni_text = self.font.render(f"Premi (E) per interagire.", True, BIANCO)
+            self.finestra.blit(interazioni_text, (500, ALTEZZA - 70))

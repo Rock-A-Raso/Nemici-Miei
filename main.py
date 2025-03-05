@@ -12,6 +12,8 @@ from npc import Npc
 from portal import portals
 pygame.init()
 
+clock = pygame.time.Clock()
+
 # funzione per caricare tutti gli assets
 assets.load_assets()
 
@@ -27,8 +29,6 @@ player.enemy = nemico
 npc = Npc(8, 8, mondo, finestra)
 portale = portals(8, 0, mondo, finestra)
 hud = HUD(finestra, player, npc)
-
-clock = pygame.time.Clock()
 
 # loop musica
 mixer.music.play(loops=-1)
@@ -52,4 +52,3 @@ while run:
             run = False
     clock.tick(FPS)
 pygame.quit()
-    
