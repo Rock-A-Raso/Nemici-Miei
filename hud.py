@@ -42,9 +42,17 @@ class HUD:
 
         self.handle_dialogue(events)
 
-        if (self.player.is_near_fountain() and self.player.thirsty) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) and not self.giaparlato:
+        if (self.player.is_near_fountain() and self.player.thirsty and self.giaparlato) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) and not self.giaparlato:
             interazioni_text = self.font.render("Premi (E) per interagire.", True, BIANCO)
             self.finestra.blit(interazioni_text, (500, ALTEZZA - 70))
+
+    def render_multiline_text(self, text, pos, font, color):
+        x, y = pos
+        for line in text.split('\n'):
+            rendered_line = font.render(line, True, color)
+            self.finestra.blit(rendered_line, (x, y))
+            y = ALTEZZA - 30
+            x = 500
 
     def handle_dialogue(self, events):
         if not self.player.is_near_npc(self.npc):
@@ -66,5 +74,4 @@ class HUD:
 
         if self.npc.parlando:
             text = assets.STRING_DIALOGUE.get(str(self.dialogue_index), "")
-            dialogue_text = self.font.render(f"{text}", True, BIANCO)
-            self.finestra.blit(dialogue_text, (500, ALTEZZA - 70))
+            self.render_multiline_text(text, (500, ALTEZZA - 70), self.font, BIANCO)

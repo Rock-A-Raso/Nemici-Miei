@@ -6,12 +6,13 @@ from enemy import Enemy
 from settings import GRANDEZZA_TILES
 
 class Giocatore:
-    def __init__(self, tile_x, tile_y, mondo, finestra, nemico):
+    def __init__(self, tile_x, tile_y, mondo, finestra, nemici, hud):
         self.mondo = mondo
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.finestra = finestra
-        self.enemy = nemico
+        self.nemici = nemici
+        self.hud = hud
 
         img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
         self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
@@ -135,7 +136,7 @@ class Giocatore:
         if self.frame_index >= len(assets.PLAYER_IDLE[self.direction]):
             self.frame_index = 0
         self.frame_counter += 1
-        if self.frame_counter >= 30:
+        if self.frame_counter >= 30:    
             self.frame_counter = 0
             self.frame_index = (self.frame_index + 1) % len(assets.PLAYER_IDLE[self.direction])
         self.image = assets.PLAYER_IDLE[self.direction][self.frame_index]
@@ -157,7 +158,7 @@ class Giocatore:
     # controlla l'interazione con la fontanella
     def controlla_fontanella(self):
         keys = pygame.key.get_pressed()
-        if self.is_near_fountain() and self.thirsty and keys[pygame.K_e]:
+        if self.is_near_fountain() and self.thirsty and keys[pygame.K_e] and self.hud.giaparlato:
             self.monete += 1
             print("[Hai trovato una monetina nella fontanella]")
             

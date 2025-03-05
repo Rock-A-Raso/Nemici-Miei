@@ -1,11 +1,11 @@
 import pygame
-from npc import Npc
 from pygame import mixer
 from settings import LUNGHEZZA, ALTEZZA
+from portal import *
 
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE
+    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES
 
     mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(1)
@@ -21,7 +21,7 @@ def load_assets():
     coin_sound.set_volume(5)
 
     morte_sound = mixer.Sound('assets/audio/boss_morte.mp3')
-    morte_sound.set_volume(1)
+    morte_sound.set_volume(0.5)
 
     TILE_IMAGES = {
         1: pygame.image.load('assets/[BLOCCHI]/tile_000.png'),    #    terreno no erba
@@ -45,6 +45,15 @@ def load_assets():
         19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra bib camminabile
         20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra portale
         21: pygame.image.load('assets/[BLOCCHI]/tile_044.png')    #    fiori
+    }
+
+    PORTAL_FRAMES = {
+        0 : pygame.image.load('assets/[PORTALE]/portal1.png'),
+        1 : pygame.image.load('assets/[PORTALE]/portal2.png'),
+        2 : pygame.image.load('assets/[PORTALE]/portal3.png'),
+        3 : pygame.image.load('assets/[PORTALE]/portal4.png'),
+        4 : pygame.image.load('assets/[PORTALE]/portal5.png'),
+        5 : pygame.image.load('assets/[PORTALE]/portal6.png')
     }
 
     PLAYER_FRAMES = {
@@ -112,17 +121,15 @@ def load_assets():
 
     STRING_DIALOGUE = {
         "1":
-            "Me: Ci conosciamo?",
+            "Me: CHI SEI?! DOVE MI TROVO???",
         "2": 
-            "Alan Turing: Non credo...",
+            "Armando Sparadise: e' molto bello!",
         "3":
-            "Alan Turing: No.. dico..",
+            "Me: (???)",
         "4":
-            "Ugo Tognazzi: La supercazzola subatomica..",
+            "Armando Sparadise: La chiave del portale \n troverai se nel blu..",
         "5":
-            "Ugo Tognazzi: ..E' bitumata!",
-        "6":
-            "Me: (???) Sara' matto questo.."
+            "Armando Sparadise: ..cercherai!",
     }
 
 # matrici

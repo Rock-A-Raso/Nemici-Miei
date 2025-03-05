@@ -17,8 +17,7 @@ class Enemy:
         self.scale_factor = 1.5
         new_size = (int(GRANDEZZA_TILES * self.scale_factor), int(GRANDEZZA_TILES * self.scale_factor))
         self.image = pygame.transform.scale(img, new_size)
-        self.rect = self.image.get_rect(midbottom=bottom_center)
-
+        self.rect = self.image.get_rect(midbottom=bottom_center)    
         self.dest_x, self.dest_y = self.rect.topleft
         self.velocita = 2
         self.in_movimento = False

@@ -23,12 +23,13 @@ pygame.display.set_caption("Nemici Miei | Rock A' Raso")
 
 # istanze
 mondo = Mondo(1, finestra, livelli)
-player = Giocatore(0, 0, mondo, finestra, None)
+player = Giocatore(0, 0, mondo, finestra, None, None)
 nemico = Enemy(3, 4, mondo, finestra, player)
 player.enemy = nemico
 npc = Npc(8, 8, mondo, finestra)
 portale = portals(8, 0, mondo, finestra)
 hud = HUD(finestra, player, npc)
+player.hud = hud
 
 # loop musica
 mixer.music.play(loops=-1)
