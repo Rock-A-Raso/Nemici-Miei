@@ -16,6 +16,7 @@ class HUD:
         self.player = player
         self.npc = npc
         self.font = pygame.font.Font("assets/ARCADE_N.ttf", 10)
+        self.font2 = pygame.font.Font("assets/DungeonFont.ttf", 25)
         self.health_icon = pygame.image.load("assets/[ITEMS]/health.png")
         self.monete_icon = pygame.image.load("assets/[ITEMS]/coin.gif")
         self.health_icon = pygame.transform.scale(self.health_icon, (32, 32))
@@ -27,18 +28,18 @@ class HUD:
         hud_rect = pygame.Rect(0, ALTEZZA - 100, LUNGHEZZA, 100)
         pygame.draw.rect(self.finestra, GRIGIO, hud_rect)
         
-        self.finestra.blit(self.health_icon, (20, ALTEZZA - 80))
-        health_text = self.font.render(f"Salute: {self.player.vita} / {self.player.vita_max}", True, BIANCO)
-        self.finestra.blit(health_text, (60, ALTEZZA - 70))
+        self.finestra.blit(self.health_icon, (20, ALTEZZA - 75))
+        health_text = self.font2.render(f"Salute: {self.player.vita} / {self.player.vita_max}", True, BIANCO)
+        self.finestra.blit(health_text, (60, ALTEZZA - 65))
 
-        self.finestra.blit(self.monete_icon, (20, ALTEZZA - 40))
-        monete_text = self.font.render(f"Monete: {self.player.monete}", True, BIANCO)
-        self.finestra.blit(monete_text, (60, ALTEZZA - 30))
+        self.finestra.blit(self.monete_icon, (20, ALTEZZA - 35))
+        monete_text = self.font2.render(f"Monete: {self.player.monete}", True, BIANCO)
+        self.finestra.blit(monete_text, (60, ALTEZZA - 25))
 
-        level_text = self.font.render(f"Livello: {self.player.level}", True, BIANCO)
-        self.finestra.blit(level_text, (250, ALTEZZA - 70))
-        exp_text = self.font.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
-        self.finestra.blit(exp_text, (250, ALTEZZA - 30))
+        level_text = self.font2.render(f"Livello: {self.player.level}", True, BIANCO)
+        self.finestra.blit(level_text, (250, ALTEZZA - 65))
+        exp_text = self.font2.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
+        self.finestra.blit(exp_text, (250, ALTEZZA - 25))
 
         self.handle_dialogue(events)
 

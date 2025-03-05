@@ -16,6 +16,8 @@ clock = pygame.time.Clock()
 
 # funzione per caricare tutti gli assets
 assets.load_assets()
+img1 = pygame.image.load('assets/[NPC]/1.png')
+img2 = pygame.image.load('assets/[NPC]/1.png')
 
 # schermo
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
@@ -26,7 +28,8 @@ mondo = Mondo(1, finestra, livelli)
 player = Giocatore(0, 0, mondo, finestra, None, None)
 nemico = Enemy(3, 4, mondo, finestra, player)
 player.enemy = nemico
-npc = Npc(8, 8, mondo, finestra)
+npc = Npc(8, 8, mondo, finestra, img1)
+npc2 = Npc(0, 2, mondo, finestra, img2)
 portale = portals(8, 0, mondo, finestra)
 hud = HUD(finestra, player, npc)
 player.hud = hud
@@ -51,9 +54,11 @@ while run:
             nemico.update()
         npc.update()
         portale.update()
+    if mondo.livello_id == 2:
+         portale.update()
+         npc2.update()
 
     hud.draw(events)
-
     pygame.display.update()
     clock.tick(FPS)
 

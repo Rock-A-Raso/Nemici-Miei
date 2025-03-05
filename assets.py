@@ -44,7 +44,9 @@ def load_assets():
         18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'), #    autoesplicativo
         19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra bib camminabile
         20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra portale
-        21: pygame.image.load('assets/[BLOCCHI]/tile_044.png')    #    fiori
+        21: pygame.image.load('assets/[BLOCCHI]/tile_044.png'),    #    fiori
+        22: pygame.image.load('assets/[BLOCCHI]/tile_061.png'),    #    ciottoli void
+        23: pygame.image.load('assets/[BLOCCHI]/chest.png')    #    ciottoli void
     }
 
     PORTAL_FRAMES = {
@@ -148,10 +150,23 @@ livello_1 = [
 ]
 
 livello_2 = [
-    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11],  
+    [11, 11, 11, 11, 23, 11, 11, 11, 11, 11],  
     [12, 11, 11, 11, 11, 11, 11, 11, 11, 11],
     [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
+    [11, 22, 11, 11, 11, 11, 11, 11, 11, 11],  
+    [11, 11, 11, 11, 11, 11, 12, 11, 11, 11],  
+    [11, 11, 12, 11, 11, 11, 12, 11, 11, 11], 
+    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
+    [11, 11, 11, 11, 12, 11, 11, 11, 12, 11],  
+    [11, 11, 11, 12, 11, 11, 11, 11, 11, 11], 
+    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+]
+
+livello_3 = [
     [11, 11, 11, 11, 11, 11, 11, 11, 11, 11],  
+    [12, 11, 11, 11, 23, 11, 11, 11, 11, 11],
+    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
+    [11, 22, 11, 11, 11, 11, 11, 11, 11, 11],  
     [11, 11, 11, 11, 11, 11, 12, 11, 11, 11],  
     [11, 11, 12, 11, 11, 11, 12, 11, 11, 11], 
     [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
@@ -162,5 +177,6 @@ livello_2 = [
 
 livelli = {
     1: livello_1, 
-    2: livello_2
+    2: livello_2,
+    3: livello_3
 }
