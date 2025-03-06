@@ -127,6 +127,9 @@ class Giocatore:
             self.vita += 15
             self.armando_vita_counter += 1
 
+        if self.vita > 100:
+            self.vita = 100
+
         self.attacca()
 
         self.finestra.blit(self.image, draw_rect)

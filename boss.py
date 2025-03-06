@@ -47,7 +47,7 @@ class Boss:
             self.calcola_prossima_mossa()
 
         if self.rigenerando and self.counter_reg <= 600 and self.hp != 0:
-            self.hp += 0.1
+            self.hp += 0.05
             self.counter_reg += 1
             if self.hp >= self.hp_max:
                 self.hp = self.hp_max
@@ -64,7 +64,7 @@ class Boss:
         self.finestra.blit(self.img, self.rect)
 
     def attacca(self):
-        if (self.tile_x == self.player.tile_x and self.tile_y == self.player.tile_y) and not self.rigenerando:
+        if  ((self.tile_x == self.player.tile_x or self.tile_x == self.player.tile_x + 1 or self.tile_x == self.player.tile_x + 2) and (self.tile_y == self.player.tile_y or self.tile_x == self.player.tile_x + 1 or self.tile_x == self.player.tile_x + 2)) and not self.rigenerando:
                 self.player.take_damage(self.damage)
                 self.rigenerando = True
 

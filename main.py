@@ -11,6 +11,7 @@ from boss import Boss
 from assets import livelli
 from npc import Npc
 from portal import portals
+from effect import blood_effect
 
 pygame.init()
 
@@ -39,10 +40,9 @@ for _ in range(n_bat):
     bats.append(Enemy(x, y, mondo, finestra, player, bat_img, 50, 2500, 2, 10))
 player.enemy = bats
 npc = Npc(8, 8, mondo, finestra, img1)
-npc2 = Npc(0, 2, mondo, finestra, img2)
 portale = portals(8, 0, mondo, finestra)
 bosses = []
-bosses.append(Boss(8, 8, mondo, finestra, player, boss_img, 0, 200))
+bosses.append(Boss(8, 8, mondo, finestra, player, boss_img, 15, 200))
 hud = HUD(finestra, player, npc, bosses[0], mondo)
 player.hud = hud
 
@@ -71,7 +71,6 @@ while run:
 
     if mondo.livello_id == 2:
         portale.update()
-        npc2.update()
         for boss in bosses:
             boss.update()
         player.enemy = bosses

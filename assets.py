@@ -65,6 +65,31 @@ def load_assets():
         5 : pygame.image.load('assets/[PORTALE]/portal6.png')
     }
 
+    BLOOD_FRAMES = {
+        0 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_0.png'),
+        1 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_1.png'),
+        2 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_2.png'),
+        3 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_3.png'),
+        4 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_4.png'),
+        5 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_5.png'),
+        6 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_6.png'),
+        7 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_7.png'),
+        8 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_8.png'),
+        9 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_9.png'),
+        10 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_10.png'),
+        11 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_11.png'),
+        12 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_12.png'),
+        13 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_13.png'),
+        14 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_14.png'),
+        15 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_15.png'),
+        16 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_16.png'),
+        17 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_17.png'),
+        18 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_18.png'),
+        19 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_19.png'),
+        20 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_20.png'),
+        21 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_21.png'),
+    }
+
     PLAYER_FRAMES = {
         "down": [
             pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png'),
