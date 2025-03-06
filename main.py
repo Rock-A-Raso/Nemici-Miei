@@ -43,12 +43,8 @@ while run:
     for event in events:
         if event.type == pygame.QUIT:
             run = False
-
-    if win.show_menu:
-        win.handle_events(events)
-        win.update()
     
-    elif menu.show_menu:
+    if menu.show_menu:
         menu.handle_events(events)
         menu.draw()
     else:
@@ -64,7 +60,7 @@ while run:
             player.enemy = bats
             npc = Npc(8, 8, mondo, finestra, img1)
             portale = portals(8, 0, mondo, finestra)
-            bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 15, 200)]
+            bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 15, 20)]
             hud = HUD(finestra, player, npc, bosses[0], mondo)
             player.hud = hud
         
@@ -77,7 +73,8 @@ while run:
         if mondo.livello_id == 1:
             canzone = 'assets/audio/soundtrack.mp3'
             for bat in bats:
-                bat.update()
+                if bat.hp > 0:
+                    bat.update()
             npc.update()
             portale.update()
         
@@ -90,13 +87,13 @@ while run:
                 canzone = nuova_canzone
             portale.update()
             for boss in bosses:
-                boss.update()
+                if boss.hp>0:
+                    boss.update()
+                else:
+                    win.update()
             player.enemy = bosses
         
         hud.draw(events)
-        
-        bats = [bat for bat in bats if bat.hp > 0]
-        bosses = [boss for boss in bosses if boss.hp > 0]
     
     pygame.display.update()
     clock.tick(FPS)
