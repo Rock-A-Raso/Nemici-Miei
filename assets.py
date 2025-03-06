@@ -5,7 +5,7 @@ from portal import *
 
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, sfondo, sfondo2
+    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, BOSS_FRAMES, sfondo, sfondo2
 
     mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(1)
@@ -128,6 +128,33 @@ def load_assets():
         ]
     }
 
+    BOSS_FRAMES = {
+        "down": [
+            pygame.image.load('assets/[MOBS]/[BOSS]/[DOWN]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[DOWN]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[DOWN]/3.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[DOWN]/4.png')
+        ],
+        "up": [
+            pygame.image.load('assets/[MOBS]/[BOSS]/[UP]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[UP]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[UP]/3.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[UP]/4.png')
+        ],
+        "left": [
+            pygame.image.load('assets/[MOBS]/[BOSS]/[LEFT]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[LEFT]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[LEFT]/3.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[LEFT]/4.png')
+        ],
+        "right": [
+            pygame.image.load('assets/[MOBS]/[BOSS]/[RIGHT]/1.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[RIGHT]/2.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[RIGHT]/3.png'),
+            pygame.image.load('assets/[MOBS]/[BOSS]/[RIGHT]/4.png')
+        ]
+    }
+
     STRING_DIALOGUE = {
         "1":
             "Me: CHI SEI?! DOVE MI TROVO???",
@@ -161,23 +188,10 @@ livello_1 = [
 ]
 
 livello_2 = [
-    [11, 11, 11, 11, 23, 11, 11, 11, 11, 11],  
-    [12, 11, 11, 11, 11, 11, 11, 11, 11, 11],
-    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
-    [11, 22, 11, 11, 11, 11, 11, 11, 11, 11],  
-    [11, 11, 11, 11, 11, 11, 12, 11, 11, 11],  
-    [11, 11, 12, 11, 11, 11, 12, 11, 11, 11], 
-    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
-    [11, 11, 11, 11, 12, 11, 11, 11, 12, 11],  
+    [11, 11, 11, 11, 12, 11, 11, 11, 11, 11],  
+    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11],
     [11, 11, 11, 12, 11, 11, 11, 11, 11, 11], 
-    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
-]
-
-livello_3 = [
-    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11],  
-    [12, 11, 11, 11, 23, 11, 11, 11, 11, 11],
-    [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
-    [11, 22, 11, 11, 11, 11, 11, 11, 11, 11],  
+    [11, 12, 11, 11, 11, 11, 11, 11, 11, 11],  
     [11, 11, 11, 11, 11, 11, 12, 11, 11, 11],  
     [11, 11, 12, 11, 11, 11, 12, 11, 11, 11], 
     [11, 11, 11, 11, 11, 11, 11, 11, 11, 11], 
@@ -189,5 +203,4 @@ livello_3 = [
 livelli = {
     1: livello_1, 
     2: livello_2,
-    3: livello_3
 }

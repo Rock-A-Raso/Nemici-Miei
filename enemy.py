@@ -1,5 +1,5 @@
 import pygame
-import assets
+import assets 
 from settings import GRANDEZZA_TILES
 
 class Enemy:

@@ -46,7 +46,7 @@ class Giocatore:
         self.exp = 0
         self.next_level_exp = 10
         self.last_attack_time = 0
-        self.attack_cooldown = 500
+        self.attack_cooldown = 1000
         self.attaccato = False
         self.attaccato_timer = 0
 
@@ -101,6 +101,9 @@ class Giocatore:
 
                 if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [7, 8]:
                     self.velocita = 2
+
+                if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [11, 12]:
+                    self.velocita = 4
 
             if not self.in_movimento:
                 self.idle()
@@ -210,10 +213,8 @@ class Giocatore:
     def attacca(self):
         keys = pygame.key.get_pressed()
         current_time = pygame.time.get_ticks()
-        # Verifica se è trascorso il cooldown e se il tasto d'attacco è premuto
         if current_time - self.last_attack_time >= self.attack_cooldown and keys[pygame.K_r]:
             for enemy in self.enemy:
-                # Controlla se il nemico è adiacente (puoi regolare la condizione in base al tuo sistema di tile)
                 if abs(self.tile_x - enemy.tile_x) <= 1 and abs(self.tile_y - enemy.tile_y) <= 1:
                     enemy.take_damage(20)
             self.last_attack_time = current_time

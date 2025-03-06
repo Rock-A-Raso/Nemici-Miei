@@ -1,5 +1,6 @@
 import pygame
 import assets
+from world import Mondo
 from player import Giocatore
 from npc import Npc
 from settings import LUNGHEZZA, ALTEZZA
@@ -11,10 +12,12 @@ GRIGIO = (50, 50, 50)
 TRASPARENTE = (0, 0, 0, 128)
 
 class HUD:
-    def __init__(self, finestra, player, npc):
+    def __init__(self, finestra, player, npc, boss, mondo):
         self.finestra = finestra
         self.player = player
         self.npc = npc
+        self.boss = boss
+        self.mondo = mondo
         self.font = pygame.font.Font("assets/Arcade.ttf", 30)
         self.font2 = pygame.font.Font("assets/DungeonFont.ttf", 25)
         self.health_icon = pygame.image.load("assets/[ITEMS]/health.png")
@@ -40,6 +43,10 @@ class HUD:
         self.finestra.blit(level_text, (250, ALTEZZA - 65))
         exp_text = self.font2.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
         self.finestra.blit(exp_text, (250, ALTEZZA - 25))
+
+        if self.mondo.livello_id == 2:
+            boss_health_text = self.font2.render(f"Salute Boss: {int(self.boss.hp)}", True, BIANCO)
+            self.finestra.blit(boss_health_text, (450, ALTEZZA - 65))
         self.handle_dialogue(events)
 
         if (self.player.is_near_fountain() and self.player.thirsty and self.giaparlato) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) and not self.giaparlato:

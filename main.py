@@ -7,6 +7,7 @@ from world import Mondo
 from player import Giocatore
 from hud import HUD
 from enemy import Enemy
+from boss import Boss
 from assets import livelli
 from npc import Npc
 from portal import portals
@@ -20,6 +21,7 @@ assets.load_assets()
 img1 = assets.NPC_IMAGES[1]
 img2 = assets.NPC_IMAGES[1]
 bat_img = assets.ENEMY_FRAMES["down"][0]
+boss_img = assets.BOSS_FRAMES["down"][0]
 
 # schermo
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
@@ -34,12 +36,14 @@ bats = []
 for _ in range(n_bat):
     x = random.randint(0, mondo.num_righe - 1)  
     y = random.randint(0, mondo.num_colonne - 1)
-    bats.append(Enemy(x, y, mondo, finestra, player, bat_img, 50, 1000, 2, 10))
+    bats.append(Enemy(x, y, mondo, finestra, player, bat_img, 50, 2500, 2, 10))
 player.enemy = bats
 npc = Npc(8, 8, mondo, finestra, img1)
 npc2 = Npc(0, 2, mondo, finestra, img2)
 portale = portals(8, 0, mondo, finestra)
-hud = HUD(finestra, player, npc)
+bosses = []
+bosses.append(Boss(8, 8, mondo, finestra, player, boss_img, 0, 200))
+hud = HUD(finestra, player, npc, bosses[0], mondo)
 player.hud = hud
 
 # musica
@@ -68,6 +72,9 @@ while run:
     if mondo.livello_id == 2:
         portale.update()
         npc2.update()
+        for boss in bosses:
+            boss.update()
+        player.enemy = bosses
         
 
     hud.draw(events)
@@ -75,6 +82,10 @@ while run:
     for bat in bats.copy():
         if bat.hp <= 0:
             bats.remove(bat)
+
+    for boss in bosses.copy():
+        if boss.hp <= 0:
+            bosses.remove(boss)
             
     pygame.display.update()
     clock.tick(FPS)
