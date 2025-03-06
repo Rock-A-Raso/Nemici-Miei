@@ -4,7 +4,7 @@ import assets
 from settings import GRANDEZZA_TILES, LUNGHEZZA, ALTEZZA
 
 # tiles camminabili
-WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 16, 17, 20, 21}
+WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 20, 21}
 
 class Mondo:
     def __init__(self, livello_id, finestra, livelli):

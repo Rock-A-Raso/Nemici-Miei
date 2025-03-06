@@ -16,7 +16,6 @@ class Npc:
         new_size = (int(GRANDEZZA_TILES/2), int(GRANDEZZA_TILES * self.scale_factor))
         self.image = pygame.transform.scale(img, new_size)
         self.rect = self.image.get_rect(midbottom=bottom_center)
-        self.nome = "Ugo Tognazzi"
     
     def update(self):
         self.finestra.blit(self.image, self.rect)

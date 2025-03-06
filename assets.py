@@ -5,7 +5,7 @@ from portal import *
 
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES
+    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES
 
     mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(1)
@@ -22,6 +22,10 @@ def load_assets():
 
     morte_sound = mixer.Sound('assets/audio/boss_morte.mp3')
     morte_sound.set_volume(0.5)
+
+    NPC_IMAGES = {
+        1: pygame.image.load('assets/[NPC]/1.png')
+    }
 
     TILE_IMAGES = {
         1: pygame.image.load('assets/[BLOCCHI]/tile_000.png'),    #    terreno no erba
@@ -44,9 +48,9 @@ def load_assets():
         18: pygame.image.load('assets/[BLOCCHI]/fontanella.png'), #    autoesplicativo
         19: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra bib camminabile
         20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra portale
-        21: pygame.image.load('assets/[BLOCCHI]/tile_044.png'),    #    fiori
-        22: pygame.image.load('assets/[BLOCCHI]/tile_061.png'),    #    ciottoli void
-        23: pygame.image.load('assets/[BLOCCHI]/chest.png')    #    ciottoli void
+        21: pygame.image.load('assets/[BLOCCHI]/tile_044.png'),   #    fiori
+        22: pygame.image.load('assets/[BLOCCHI]/tile_061.png'),   #    ciottoli void
+        23: pygame.image.load('assets/[BLOCCHI]/chest.png')       #    ciottoli void
     }
 
     PORTAL_FRAMES = {

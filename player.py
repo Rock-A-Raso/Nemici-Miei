@@ -36,6 +36,8 @@ class Giocatore:
         self.frame_index = 0
         self.frame_counter = 0
 
+        self.armando_vita_counter = 0
+
         # stats
         self.vita = 100
         self.vita_max = 100
@@ -91,8 +93,12 @@ class Giocatore:
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
 
-                if self.in_movimento:
+                if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [3, 4]:
                     random.choice(assets.grass_sounds).play(maxtime=300, fade_ms=50)
+                    self.velocita = 4
+
+                if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [7, 8]:
+                    self.velocita = 2
 
             if not self.in_movimento:
                 self.idle()
@@ -110,6 +116,11 @@ class Giocatore:
 
         draw_rect = self.rect.copy()
         draw_rect.y -= offset
+
+        # dai vita al giocatore quando parla con armando
+        if self.hud.dialogue_index == 2 and self.armando_vita_counter<1 and self.vita < 100:
+            self.vita += 15
+            self.armando_vita_counter+=1
 
         self.attacca()
 
@@ -185,9 +196,10 @@ class Giocatore:
     def attacca(self):
         keys = pygame.key.get_pressed()
         current_time = pygame.time.get_ticks()
-        if abs(self.tile_x - self.enemy.tile_x) <= 1 and abs(self.tile_y - self.enemy.tile_y) <= 1:
-            if current_time - self.last_attack_time >= self.attack_cooldown:
-                if keys[pygame.K_r]:
-                    self.enemy.take_damage(20)
-                    self.last_attack_time = current_time
- 
+        # Verifica se è trascorso il cooldown e se il tasto d'attacco è premuto
+        if current_time - self.last_attack_time >= self.attack_cooldown and keys[pygame.K_r]:
+            for enemy in self.enemy:
+                # Controlla se il nemico è adiacente (puoi regolare la condizione in base al tuo sistema di tile)
+                if abs(self.tile_x - enemy.tile_x) <= 1 and abs(self.tile_y - enemy.tile_y) <= 1:
+                    enemy.take_damage(20)
+            self.last_attack_time = current_time
