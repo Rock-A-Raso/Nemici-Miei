@@ -5,13 +5,16 @@ from portal import *
 
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES
+    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, sfondo, sfondo2
 
     mixer.music.load('assets/audio/soundtrack.mp3')
     mixer.music.set_volume(1)
 
     sfondo = pygame.image.load('assets/[SFONDI]/bg.png')
     sfondo = pygame.transform.scale(sfondo, (LUNGHEZZA, ALTEZZA))
+
+    sfondo2 = pygame.image.load('assets/[SFONDI]/bg2.png')
+    sfondo2 = pygame.transform.scale(sfondo2, (LUNGHEZZA, ALTEZZA))
 
     grass_sounds = [mixer.Sound('assets/audio/grass-001.mp3')]
     for sound in grass_sounds:
@@ -129,13 +132,17 @@ def load_assets():
         "1":
             "Me: CHI SEI?! DOVE MI TROVO???",
         "2": 
-            "Armando Sparadise: e' molto bello!",
+            "Ugo Tognazzi: No dico noi siamo in due,\ncome se fosse Antani, prefettura?",
         "3":
             "Me: (???)",
         "4":
-            "Armando Sparadise: La chiave del portale \n troverai se nel blu..",
+            "Ugo Tognazzi: Dico la supercazzola\ne' subatomica ma..",
         "5":
-            "Armando Sparadise: ..cercherai!",
+            "Ugo Tognazzi: ..prematurata in acqua!",
+        "6":
+            "Me: Cosa mi significa?",
+        "7":
+            "Ugo Tognazzi: TERAPIATAPIOCO! Cerca...\nSe te ne vuoi andare..",
     }
 
 # matrici

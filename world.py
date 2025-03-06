@@ -13,9 +13,8 @@ class Mondo:
         self.livelli = livelli 
 
         # immagine di sfondo
-        self.sfondo = pygame.image.load('assets/[SFONDI]/bg.png')
-        self.sfondo = pygame.transform.scale(self.sfondo, (LUNGHEZZA, self.finestra.get_height()))
-
+        self.sfondo = assets.sfondo
+        self.sfondo2 = assets.sfondo2
         self.offset_x = 0
         self.offset_y = 0
 
@@ -135,7 +134,10 @@ class Mondo:
 
     # disegna
     def disegna(self):
-        self.finestra.blit(self.sfondo, (0, 0))
+        if self.livello_id == 1:
+            self.finestra.blit(self.sfondo, (0, 0))
+        elif self.livello_id == 2:
+            self.finestra.blit(self.sfondo2, (0, 0))
         for img, rect in self.lista_tiles:
             self.finestra.blit(img, rect)
         for img, rect in self.lista_fontanelle:

@@ -15,7 +15,7 @@ class HUD:
         self.finestra = finestra
         self.player = player
         self.npc = npc
-        self.font = pygame.font.Font("assets/ARCADE_N.ttf", 10)
+        self.font = pygame.font.Font("assets/Arcade.ttf", 30)
         self.font2 = pygame.font.Font("assets/DungeonFont.ttf", 25)
         self.health_icon = pygame.image.load("assets/[ITEMS]/health.png")
         self.monete_icon = pygame.image.load("assets/[ITEMS]/coin.gif")
@@ -40,7 +40,6 @@ class HUD:
         self.finestra.blit(level_text, (250, ALTEZZA - 65))
         exp_text = self.font2.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
         self.finestra.blit(exp_text, (250, ALTEZZA - 25))
-
         self.handle_dialogue(events)
 
         if (self.player.is_near_fountain() and self.player.thirsty and self.giaparlato) or (self.player.is_near_npc(self.npc) and not self.npc.parlando) and not self.giaparlato:

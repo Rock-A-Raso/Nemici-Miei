@@ -68,6 +68,7 @@ while run:
     if mondo.livello_id == 2:
         portale.update()
         npc2.update()
+        
 
     hud.draw(events)
 

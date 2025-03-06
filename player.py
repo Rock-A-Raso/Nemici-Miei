@@ -47,6 +47,8 @@ class Giocatore:
         self.next_level_exp = 10
         self.last_attack_time = 0
         self.attack_cooldown = 500
+        self.attaccato = False
+        self.attaccato_timer = 0
 
     def update(self):
         # raggiungi destinazione
@@ -118,13 +120,24 @@ class Giocatore:
         draw_rect.y -= offset
 
         # dai vita al giocatore quando parla con armando
-        if self.hud.dialogue_index == 2 and self.armando_vita_counter<1 and self.vita < 100:
+        if self.hud.dialogue_index == 2 and self.armando_vita_counter < 1 and self.vita < 100:
             self.vita += 15
-            self.armando_vita_counter+=1
+            self.armando_vita_counter += 1
 
         self.attacca()
 
         self.finestra.blit(self.image, draw_rect)
+
+        # filla rosso
+        if self.attaccato:
+            self.attaccato_timer += 1
+            if self.attaccato_timer > 15:  
+                self.attaccato = False
+                self.attaccato_timer = 0
+            else:
+                overlay = pygame.Surface(self.image.get_size(), pygame.SRCALPHA)
+                overlay.fill((255, 0, 0, 75)) 
+                self.finestra.blit(overlay, draw_rect.topleft)
 
     # animazioni
     def animate(self):
@@ -181,6 +194,7 @@ class Giocatore:
         self.vita -= amount
         if self.vita < 0:
             self.vita = 0
+        self.attaccato = True
 
     # controlla se é vicino ad un npc
     def is_near_npc(self, npc):
