@@ -11,6 +11,7 @@ from boss import Boss
 from npc import Npc
 from portal import portals
 from menu import Menu
+from win import Win
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -33,6 +34,7 @@ pygame.display.set_caption("Nemici Miei | Rock A' Raso")
 
 # Menu
 menu = Menu(finestra)
+win = Win(finestra)
 
 # Loop principale
 run = True
@@ -41,8 +43,12 @@ while run:
     for event in events:
         if event.type == pygame.QUIT:
             run = False
+
+    if win.show_menu:
+        win.handle_events(events)
+        win.update()
     
-    if menu.show_menu:
+    elif menu.show_menu:
         menu.handle_events(events)
         menu.draw()
     else:

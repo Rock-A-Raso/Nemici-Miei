@@ -21,7 +21,8 @@ def load_assets():
         "stone": mixer.Sound('assets/audio/stone.mp3'),
         "acqua": mixer.Sound('assets/audio/stone.mp3'),
         "attack": mixer.Sound('assets/audio/spada_fx-004.mp3'),
-        "player_dmg": mixer.Sound('assets/audio/player_dmg.mp3')
+        "player_dmg": mixer.Sound('assets/audio/player_dmg.mp3'),
+        "bat_morte": mixer.Sound('assets/audio/bat_mobile.mp3')
     }
 
     sounds["grass"].set_volume(0.1)
