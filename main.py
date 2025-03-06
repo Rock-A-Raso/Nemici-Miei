@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 # musica
 canzone = 'assets/audio/soundtrack.mp3'
 mixer.music.load(canzone)
-mixer.music.set_volume(1)
+mixer.music.set_volume(0.2)
 mixer.music.play(-1)
 # assets
 assets.load_assets()
