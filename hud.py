@@ -3,7 +3,7 @@ import assets
 from world import Mondo
 from player import Giocatore
 from npc import Npc
-from settings import *
+from settings import ALTEZZA, LUNGHEZZA, GRIGIO, BIANCO
 
 class HUD:
     def __init__(self, finestra, player, npc, boss, mondo):

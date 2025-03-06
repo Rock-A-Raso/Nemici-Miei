@@ -3,28 +3,34 @@ from pygame import mixer
 from settings import LUNGHEZZA, ALTEZZA
 from portal import *
 
+
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, BOSS_FRAMES, sfondo, sfondo2, sfondo3, boss_soundtrack
+    global sounds, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, BOSS_FRAMES, SFONDO_IMAGES
 
-    sfondo = pygame.image.load('assets/[SFONDI]/bg.png')
-    sfondo = pygame.transform.scale(sfondo, (LUNGHEZZA, ALTEZZA))
+    SFONDO_IMAGES = {
+        1: pygame.transform.scale(pygame.image.load('assets/[SFONDI]/bg.png'), (LUNGHEZZA, ALTEZZA)),
+        2: pygame.transform.scale(pygame.image.load('assets/[SFONDI]/bg2.png'), (LUNGHEZZA, ALTEZZA)),
+        3: pygame.transform.scale(pygame.image.load('assets/[SFONDI]/bg3.png'), (LUNGHEZZA, ALTEZZA))
+    }
+    
+    sounds = {
+        "grass": mixer.Sound('assets/audio/grass-001.mp3'),
+        "coin": mixer.Sound('assets/audio/coin.mp3'),
+        "morte": mixer.Sound('assets/audio/boss_morte.mp3'),
+        "stone": mixer.Sound('assets/audio/stone.mp3'),
+        "acqua": mixer.Sound('assets/audio/stone.mp3'),
+        "attack": mixer.Sound('assets/audio/stone.mp3'),
+        "player_dmg": mixer.Sound('assets/audio/stone.mp3')
+    }
 
-    sfondo2 = pygame.image.load('assets/[SFONDI]/bg2.png')
-    sfondo2 = pygame.transform.scale(sfondo2, (LUNGHEZZA, ALTEZZA))
-
-    sfondo3 = pygame.image.load('assets/[SFONDI]/bg3.png')
-    sfondo3 = pygame.transform.scale(sfondo3, (LUNGHEZZA, ALTEZZA))
-
-    grass_sounds = [mixer.Sound('assets/audio/grass-001.mp3')]
-    for sound in grass_sounds:
-        sound.set_volume(0.1)
-
-    coin_sound = mixer.Sound('assets/audio/coin.mp3')
-    coin_sound.set_volume(5)
-
-    morte_sound = mixer.Sound('assets/audio/boss_morte.mp3')
-    morte_sound.set_volume(0.5)
+    sounds["grass"].set_volume(0.1)
+    sounds["coin"].set_volume(5)
+    sounds["morte"].set_volume(0.5)
+    sounds["stone"].set_volume(0.1)
+    sounds["acqua"].set_volume(0.1)
+    sounds["attack"].set_volume(0.1)
+    sounds["player_dmg"].set_volume(0.1)
 
     NPC_IMAGES = {
         1: pygame.image.load('assets/[NPC]/1.png')
@@ -53,7 +59,6 @@ def load_assets():
         20: pygame.image.load('assets/[BLOCCHI]/tile_022.png'),   #    terra portale
         21: pygame.image.load('assets/[BLOCCHI]/tile_044.png'),   #    fiori
         22: pygame.image.load('assets/[BLOCCHI]/tile_061.png'),   #    ciottoli void
-        23: pygame.image.load('assets/[BLOCCHI]/chest.png')       #    ciottoli void
     }
 
     PORTAL_FRAMES = {
@@ -63,31 +68,6 @@ def load_assets():
         3 : pygame.image.load('assets/[PORTALE]/portal4.png'),
         4 : pygame.image.load('assets/[PORTALE]/portal5.png'),
         5 : pygame.image.load('assets/[PORTALE]/portal6.png')
-    }
-
-    BLOOD_FRAMES = {
-        0 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_0.png'),
-        1 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_1.png'),
-        2 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_2.png'),
-        3 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_3.png'),
-        4 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_4.png'),
-        5 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_5.png'),
-        6 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_6.png'),
-        7 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_7.png'),
-        8 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_8.png'),
-        9 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_9.png'),
-        10 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_10.png'),
-        11 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_11.png'),
-        12 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_12.png'),
-        13 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_13.png'),
-        14 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_14.png'),
-        15 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_15.png'),
-        16 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_16.png'),
-        17 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_17.png'),
-        18 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_18.png'),
-        19 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_19.png'),
-        20 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_20.png'),
-        21 : pygame.image.load('assets/[EFFETTI]/[BLOOD]/1/1_21.png'),
     }
 
     PLAYER_FRAMES = {

@@ -1,8 +1,8 @@
 import pygame
 import random
+import assets
 from pygame import mixer
 from settings import LUNGHEZZA, ALTEZZA, FPS
-import assets
 from world import Mondo
 from player import Giocatore
 from hud import HUD
@@ -10,7 +10,6 @@ from enemy import Enemy
 from boss import Boss
 from npc import Npc
 from portal import portals
-from effect import blood_effect
 from menu import Menu
 
 pygame.init()

@@ -95,14 +95,18 @@ class Giocatore:
                 self.dest_x = bottom_center[0] - self.rect.width // 2
                 self.dest_y = bottom_center[1] - self.rect.height
 
+
+                # se cammina sull'erba/acqua/pietra
                 if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [3, 4]:
-                    random.choice(assets.grass_sounds).play(maxtime=300, fade_ms=50)
+                    assets.sounds["grass"].play(maxtime=300, fade_ms=50)
                     self.velocita = 4
-
+                # acqua
                 if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [7, 8]:
+                    assets.sounds["acqua"].play(maxtime=300, fade_ms=50)
                     self.velocita = 2
-
+                # pietra
                 if self.in_movimento and self.mondo.matrice[self.tile_y][self.tile_x] in [11, 12]:
+                    assets.sounds["stone"].play(maxtime=300, fade_ms=50)
                     self.velocita = 4
 
             if not self.in_movimento:
@@ -193,11 +197,12 @@ class Giocatore:
             print("[Hai trovato una monetina nella fontanella]")
             
             self.thirsty = False
-            assets.coin_sound.play()
+            assets.sounds["coin"].play()
 
     # prende danno
     def take_damage(self, amount):
         self.vita -= amount
+        assets.sounds["player_dmg"].play(maxtime=300, fade_ms=50)
         if self.vita < 0:
             self.vita = 0
         self.attaccato = True
@@ -220,4 +225,5 @@ class Giocatore:
             for enemy in self.enemy:
                 if abs(self.tile_x - enemy.tile_x) <= 1 and abs(self.tile_y - enemy.tile_y) <= 1:
                     enemy.take_damage(20)
+                    assets.sounds["attack"].play(maxtime=300, fade_ms=50)
             self.last_attack_time = current_time

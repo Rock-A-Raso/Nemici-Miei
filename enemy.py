@@ -96,4 +96,4 @@ class Enemy:
         self.hp -= amount
         if self.hp < 0:
             self.hp = 0
-            assets.morte_sound.play()
+            assets.sounds["morte"].play()

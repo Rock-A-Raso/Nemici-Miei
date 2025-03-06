@@ -3,8 +3,7 @@ import assets
 from world import Mondo
 from player import Giocatore
 from npc import Npc
-from settings import LUNGHEZZA, ALTEZZA
-from settings import *
+from settings import BIANCO, ROSSO, LUNGHEZZA, ALTEZZA
 
 class Menu:
     def __init__(self, finestra):
@@ -16,8 +15,8 @@ class Menu:
 
     def draw(self):
         if self.show_menu:
-            self.finestra.fill(GRIGIO)
-            title_text = self.font2.render("Nemici Miei", True, BIANCO)
+            self.finestra.blit(assets.SFONDO_IMAGES[3], (0, 0))
+            title_text = self.font2.render("Nemici Miei", True, ROSSO)
             self.finestra.blit(title_text, (LUNGHEZZA // 2 - title_text.get_width() // 2, ALTEZZA // 2 - 100))
             
             pygame.draw.rect(self.finestra, ROSSO, self.button_rect)

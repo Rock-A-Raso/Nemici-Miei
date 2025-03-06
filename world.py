@@ -13,8 +13,8 @@ class Mondo:
         self.livelli = livelli 
 
         # immagine di sfondo
-        self.sfondo = assets.sfondo
-        self.sfondo2 = assets.sfondo2
+        self.sfondo = assets.SFONDO_IMAGES[1]
+        self.sfondo2 = assets.SFONDO_IMAGES[2]
         self.offset_x = 0
         self.offset_y = 0
 
