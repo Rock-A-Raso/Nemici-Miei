@@ -3,13 +3,7 @@ import assets
 from world import Mondo
 from player import Giocatore
 from npc import Npc
-from settings import LUNGHEZZA, ALTEZZA
-
-ROSSO = (255, 0, 0)
-BLU = (0, 0, 255)
-BIANCO = (255, 255, 255)
-GRIGIO = (50, 50, 50)
-TRASPARENTE = (0, 0, 0, 128)
+from settings import *
 
 class HUD:
     def __init__(self, finestra, player, npc, boss, mondo):
