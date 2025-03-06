@@ -216,7 +216,7 @@ class Giocatore:
     def attacca(self):
         keys = pygame.key.get_pressed()
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_attack_time >= self.attack_cooldown and keys[pygame.K_r]:
+        if current_time - self.last_attack_time >= self.attack_cooldown and pygame.mouse.get_pressed()[0]:
             for enemy in self.enemy:
                 if abs(self.tile_x - enemy.tile_x) <= 1 and abs(self.tile_y - enemy.tile_y) <= 1:
                     enemy.take_damage(20)

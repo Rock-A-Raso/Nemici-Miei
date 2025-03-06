@@ -5,16 +5,16 @@ from portal import *
 
 # funzione per caricare tutti gli assets
 def load_assets():
-    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, BOSS_FRAMES, sfondo, sfondo2
-
-    mixer.music.load('assets/audio/soundtrack.mp3')
-    mixer.music.set_volume(1)
+    global grass_sounds, coin_sound, morte_sound, TILE_IMAGES, PLAYER_FRAMES, PLAYER_IDLE, ENEMY_FRAMES, STRING_DIALOGUE, PORTAL_FRAMES, NPC_IMAGES, BOSS_FRAMES, sfondo, sfondo2, sfondo3, boss_soundtrack
 
     sfondo = pygame.image.load('assets/[SFONDI]/bg.png')
     sfondo = pygame.transform.scale(sfondo, (LUNGHEZZA, ALTEZZA))
 
     sfondo2 = pygame.image.load('assets/[SFONDI]/bg2.png')
     sfondo2 = pygame.transform.scale(sfondo2, (LUNGHEZZA, ALTEZZA))
+
+    sfondo3 = pygame.image.load('assets/[SFONDI]/bg3.png')
+    sfondo3 = pygame.transform.scale(sfondo3, (LUNGHEZZA, ALTEZZA))
 
     grass_sounds = [mixer.Sound('assets/audio/grass-001.mp3')]
     for sound in grass_sounds:
