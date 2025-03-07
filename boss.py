@@ -4,9 +4,6 @@ from settings import GRANDEZZA_TILES
 
 class Boss:
     def __init__(self, tile_x, tile_y, mondo, finestra, player, img, damage, hp):
-        self.start(tile_x, tile_y, mondo, finestra, player, img, damage, hp)
-        
-    def start(self, tile_x, tile_y, mondo, finestra, player, img, damage, hp):
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.hp = hp
@@ -33,7 +30,6 @@ class Boss:
         self.dest_x, self.dest_y = self.rect.topleft
 
     def update(self):
-        # si muove verso il punto di destinazione
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -50,8 +46,7 @@ class Boss:
             self.in_movimento = False
             self.calcola_prossima_mossa()
 
-        #si rigenera e torna ad attaccare
-        if self.rigenerando and self.counter_reg <= 600 and self.hp != 0 and self.tile_x == self.reg_tile_x and self.tile_y == self.reg_tile_y:
+        if self.rigenerando and self.counter_reg <= 600 and self.hp != 0:
             self.hp += 0.05
             self.counter_reg += 1
             if self.hp >= self.hp_max:
@@ -59,8 +54,8 @@ class Boss:
             if self.counter_reg == 180:
                 self.rigenerando = False
                 self.attacca()
+                self.counter_reg = 0
 
-        # si trasforma in boss finale
         if self.hp <= 100:
             self.img = pygame.transform.scale(self.img, (GRANDEZZA_TILES, GRANDEZZA_TILES))
             self.velocita = 8
@@ -74,11 +69,9 @@ class Boss:
                 self.rigenerando = True
 
     def calcola_prossima_mossa(self):
-        # se si sta rigenerando va nel punto di rigenerazione
         if self.rigenerando:
             dx = self.reg_tile_x - self.tile_x
             dy = self.reg_tile_y - self.tile_y
-        # oppure segue il giocatore
         else:
             dx = self.player.tile_x - self.tile_x
             dy = self.player.tile_y - self.tile_y

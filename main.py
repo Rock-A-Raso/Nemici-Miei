@@ -64,7 +64,7 @@ while run:
             player.enemy = bats
             npc = Npc(8, 8, mondo, finestra, img1)
             portale = portals(8, 0, mondo, finestra)
-            bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 20, 200)]
+            bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 10, 150)]
             hud = HUD(finestra, player, npc, bosses[0], mondo)
             player.hud = hud
 
@@ -83,7 +83,7 @@ while run:
                 mondo.start(1, finestra, assets.livelli)
                 player.start(0, 0, mondo, finestra, None, None)
                 hud.start(finestra, player, npc, bosses[0], mondo)
-                bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 20, 200)]
+                bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 10, 150)]
                 n_bat = random.randint(3, 5)
                 bats = [Enemy(random.randint(0, mondo.num_righe - 1),
                           random.randint(0, mondo.num_colonne - 1),
@@ -91,6 +91,7 @@ while run:
                     for _ in range(n_bat)]
                 livello_id = 1
                 hud.start(finestra, player, npc, bosses[0], mondo)
+                player.hud = hud
                 riprova.restart_requested = False
 
         # livello 1
