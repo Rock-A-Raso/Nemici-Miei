@@ -7,20 +7,9 @@ from settings import GRANDEZZA_TILES
 
 class Giocatore:
     def __init__(self, tile_x, tile_y, mondo, finestra, nemici, hud):
-        # Inizializza il giocatore chiamando il metodo start, che imposta lo stato iniziale
         self.start(tile_x, tile_y, mondo, finestra, nemici, hud)
     
     def start(self, tile_x, tile_y, mondo, finestra, nemici, hud):
-        """
-        Imposta lo stato iniziale del giocatore.
-        :param tile_x: Coordinata in tile lungo l'asse x
-        :param tile_y: Coordinata in tile lungo l'asse y
-        :param mondo: Istanza del mondo di gioco (per es. per conversioni tile->screen)
-        :param finestra: Finestra di gioco in cui disegnare il giocatore
-        :param nemici: Lista dei nemici presenti nel gioco
-        :param hud: Istanza dell'HUD (Heads-Up Display)
-        """
-        # Assegna i parametri agli attributi del giocatore
         self.mondo = mondo
         self.tile_x = tile_x
         self.tile_y = tile_y
@@ -28,60 +17,42 @@ class Giocatore:
         self.nemici = nemici
         self.hud = hud
 
-        # Carica l'immagine del giocatore dal file e la scala in base alla dimensione dei tile
-        img = pygame.image.load('assets/[PERSONAGGIO]/[MOVEMENT]/[DOWN]/walkd1.png')
+        img = assets.PLAYER_FRAMES["down"][0]
         self.image = pygame.transform.scale(img, (GRANDEZZA_TILES // 2, GRANDEZZA_TILES // 2))
 
-        # Converte le coordinate del tile in coordinate pixel sullo schermo
+        # converte le coordinate del tile in coordinate pixel sullo schermo
         sx, sy = self.mondo.tile_to_screen(tile_x, tile_y)
 
-        # Calcola il centro del tile per posizionare correttamente il giocatore
+        # calcola il centro del tile per posizionare correttamente il giocatore
         center = (sx + GRANDEZZA_TILES // 2, sy + GRANDEZZA_TILES // 2)
-        # Ottieni il rettangolo (rect) dell'immagine con il centro impostato
+        # rettangolo dell'immagine
         self.rect = self.image.get_rect(center=center)
-        # Imposta la destinazione iniziale (topleft) pari a quella attuale
-        self.dest_x, self.dest_y = self.rect.topleft
-        # (Opzionale) Aggiorna il rettangolo per un diverso allineamento (midbottom)
-        self.rect = self.image.get_rect(midbottom=center)
+        # imposta la destinazione iniziale pari a quella attuale
         self.dest_x, self.dest_y = self.rect.topleft
 
-        # Imposta la velocità (in pixel per frame) e il flag di movimento
         self.velocita = 4
         self.in_movimento = False
 
-        # Ottieni la posizione della fontanella nel mondo (funzione definita in mondo)
         self.fountain_x, self.fountain_y = self.mondo.trova_fontanella()
-        # Flag per indicare se il giocatore ha ancora sete (deve bere alla fontanella)
         self.thirsty = True
-        # Imposta la direzione iniziale del giocatore
         self.direction = "down"
-        # Indice e contatore per gestire l'animazione dei frame
         self.frame_index = 0
         self.frame_counter = 0
 
-        # Contatore per gestire la rigenerazione della vita (ad esempio, tramite un NPC come "Armando")
-        self.armando_vita_counter = 0
+        self.ugo_vita_counter = 0
 
-        # Statistiche del giocatore
-        self.vita = 100           # Salute corrente
+        # statistiche del giocatore
+        self.vita = 100           # Salute 
         self.vita_max = 100       # Salute massima
         self.monete = 0           # Numero di monete raccolte
-        self.level = 1            # Livello del giocatore
-        self.exp = 0              # Esperienza corrente
-        self.next_level_exp = 10  # Esperienza necessaria per il prossimo livello
-        self.last_attack_time = 0 # Tempo dell'ultimo attacco (per il cooldown)
-        self.attack_cooldown = 1000  # Cooldown dell'attacco (in millisecondi)
-        self.attaccato = False    # Flag per indicare se il giocatore è stato danneggiato (per effetti visivi)
+        self.level = 1            # Livello 
+        self.last_attack_time = 0 # Tempo dell'ultimo attacco 
+        self.attack_cooldown = 1000  # Cooldown dell'attacco 
+        self.attaccato = False    # Flag per indicare se il giocatore è stato danneggiato 
         self.attaccato_timer = 0  # Timer per la durata dell'effetto "attaccato"
 
     def update(self):
-        """
-        Aggiorna lo stato del giocatore ad ogni frame:
-          - Gestisce il movimento verso la destinazione
-          - Gestisce gli input per lo spostamento
-          - Aggiorna animazioni e interazioni (attacchi, cambi di livello, ecc.)
-        """
-        # Se il giocatore non ha raggiunto la destinazione, muovilo gradualmente
+        # se il giocatore non ha raggiunto la destinazione, muovilo gradualmente
         if self.rect.topleft != (self.dest_x, self.dest_y):
             # Calcola la differenza tra la posizione attuale e quella di destinazione
             dx = self.dest_x - self.rect.x

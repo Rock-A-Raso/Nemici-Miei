@@ -13,7 +13,7 @@ class Try:
 
     def draw(self):
         if self.show_menu:
-            title_text = self.font2.render("Nemici Miei", True, (0, 0, 0))
+            title_text = self.font2.render("Sei Morto", True, ROSSO)
             self.finestra.blit(title_text, (LUNGHEZZA // 2 - title_text.get_width() // 2, ALTEZZA // 2 - 100))
             pygame.draw.rect(self.finestra, ROSSO, self.button_rect)
             button_text = self.font.render("Riprova", True, BIANCO)

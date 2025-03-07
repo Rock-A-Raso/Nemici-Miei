@@ -17,30 +17,29 @@ from riprova import Try
 pygame.init()
 clock = pygame.time.Clock()
 
-# Inizializza la musica di background
+# musica di background
 canzone = 'assets/audio/soundtrack.mp3'
 mixer.music.load(canzone)
 mixer.music.set_volume(0.2)
 mixer.music.play(-1)
 
-# Carica gli assets (immagini, suoni, dati di livello, ecc.)
+# carica gli assets 
 assets.load_assets()
 
-# Imposta alcuni riferimenti alle immagini caricate
 img1 = assets.NPC_IMAGES[1]
 bat_img = assets.ENEMY_FRAMES["down"][0]
 boss_img = assets.BOSS_FRAMES["down"][0]
 
-# Crea la finestra di gioco
+# finestra di gioco
 finestra = pygame.display.set_mode((LUNGHEZZA, ALTEZZA))
 pygame.display.set_caption("Nemici Miei | Rock A' Raso")
 
-# Crea le istanze per il menu, la schermata di vittoria e il Try Again (riprova)
+# istanze
 menu = Menu(finestra)
 win = Win(finestra)
 riprova = Try(finestra)
 
-# Loop principale del gioco
+# loop principale del gioco
 run = True
 while run:
     events = pygame.event.get()
@@ -53,7 +52,7 @@ while run:
         menu.handle_events(events)
         menu.draw()
     else:
-        # Inizializza il mondo e il giocatore dopo la chiusura del menu
+        # inizializza dopo la chiusura del menu
         if 'mondo' not in locals():
             # Crea il mondo di gioco usando i dati di livello caricati
             mondo = Mondo(1, finestra, assets.livelli)
@@ -79,7 +78,7 @@ while run:
 
         # Disegna il mondo di gioco
         mondo.disegna()
-        # Controlla eventuali interazioni del giocatore (ad es. con una fontanella)
+        # Controlla eventuali interazioni del giocatore 
         player.controlla_fontanella()
 
         if player.vita > 0:

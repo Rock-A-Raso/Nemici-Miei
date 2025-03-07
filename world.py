@@ -166,4 +166,4 @@ class Mondo:
     def nuovo_livello(self, nuovo_livello):
         if nuovo_livello in self.livelli:
             self.livello_id = nuovo_livello
-            self.carica_mondo()
+            self.carica_mondo() 

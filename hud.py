@@ -38,8 +38,6 @@ class HUD:
 
         level_text = self.font2.render(f"Livello: {self.player.level}", True, BIANCO)
         self.finestra.blit(level_text, (250, ALTEZZA - 65))
-        exp_text = self.font2.render(f"EXP: {self.player.exp}/{self.player.next_level_exp}", True, BIANCO)
-        self.finestra.blit(exp_text, (250, ALTEZZA - 25))
 
         if self.mondo.livello_id == 2:
             boss_health_text = self.font2.render(f"Salute Boss: {int(self.boss.hp)}", True, BIANCO)
