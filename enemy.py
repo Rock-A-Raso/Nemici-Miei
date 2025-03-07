@@ -4,6 +4,9 @@ from settings import GRANDEZZA_TILES
 
 class Enemy:
     def __init__(self, tile_x, tile_y, mondo, finestra, player, img, hp, cooldown, velocita, dmg):
+        self.start(tile_x, tile_y, mondo, finestra, player, img, hp, cooldown, velocita, dmg)
+
+    def start(self, tile_x, tile_y, mondo, finestra, player, img, hp, cooldown, velocita, dmg):
         self.mondo = mondo
         self.finestra = finestra
         self.tile_x = tile_x
@@ -27,6 +30,7 @@ class Enemy:
         self.frame_index = 0
         self.frame_counter = 0
         self.last_attack_time = 0
+
 
     def update(self):
         if self.rect.topleft != (self.dest_x, self.dest_y):

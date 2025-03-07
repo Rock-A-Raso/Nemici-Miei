@@ -8,6 +8,8 @@ WALKABLE_TILES = {1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 20, 21}
 
 class Mondo:
     def __init__(self, livello_id, finestra, livelli):
+        self.start(livello_id, finestra, livelli)
+    def start(self, livello_id, finestra, livelli):
         self.livello_id = livello_id
         self.finestra = finestra 
         self.livelli = livelli 
@@ -19,6 +21,7 @@ class Mondo:
         self.offset_y = 0
 
         self.carica_mondo()
+        
     # calcola offset per centrare la mappa
     def calcola_offset(self):
         # esclude l'hud dall'altezza totale

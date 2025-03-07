@@ -7,6 +7,9 @@ from settings import ALTEZZA, LUNGHEZZA, GRIGIO, BIANCO
 
 class HUD:
     def __init__(self, finestra, player, npc, boss, mondo):
+        self.start(finestra, player, npc, boss, mondo)
+    
+    def start(self, finestra, player, npc, boss, mondo):
         self.finestra = finestra
         self.player = player
         self.npc = npc
