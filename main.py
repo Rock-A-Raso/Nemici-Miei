@@ -47,47 +47,39 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-    # Se il menu è attivo, gestiscilo e disegnalo
+    # menu è attivo
     if menu.show_menu:
         menu.handle_events(events)
         menu.draw()
     else:
         # inizializza dopo la chiusura del menu
         if 'mondo' not in locals():
-            # Crea il mondo di gioco usando i dati di livello caricati
             mondo = Mondo(1, finestra, assets.livelli)
-            # Crea il giocatore
             player = Giocatore(0, 0, mondo, finestra, None, None)
-            # Crea un numero casuale di nemici "bat"
             n_bat = random.randint(3, 5)
             bats = [Enemy(random.randint(0, mondo.num_righe - 1),
                           random.randint(0, mondo.num_colonne - 1),
                           mondo, finestra, player, bat_img, 50, 2500, 2, 10)
                     for _ in range(n_bat)]
-            # Assegna la lista di nemici al giocatore
             player.enemy = bats
-            # Crea un NPC
             npc = Npc(8, 8, mondo, finestra, img1)
-            # Crea un portale
             portale = portals(8, 0, mondo, finestra)
-            # Crea il boss
             bosses = [Boss(0, 0, mondo, finestra, player, boss_img, 20, 200)]
-            # Crea l'HUD passando i riferimenti necessari
             hud = HUD(finestra, player, npc, bosses[0], mondo)
             player.hud = hud
 
-        # Disegna il mondo di gioco
         mondo.disegna()
-        # Controlla eventuali interazioni del giocatore 
         player.controlla_fontanella()
 
+        # controlla se il giocatore è vivo
         if player.vita > 0:
             player.update()
         else:
+            # try again
             riprova.handle_events(events)
-            riprova.draw()  # Disegna la schermata "Try Again"
-            # Controlla se il pulsante "Riprova" è stato premuto
+            riprova.draw()  
             if riprova.restart_requested:
+                # restarta tutto
                 mondo.start(1, finestra, assets.livelli)
                 player.start(0, 0, mondo, finestra, None, None)
                 hud.start(finestra, player, npc, bosses[0], mondo)
@@ -101,7 +93,7 @@ while run:
                 hud.start(finestra, player, npc, bosses[0], mondo)
                 riprova.restart_requested = False
 
-        # Se siamo al livello 1, aggiorna i nemici, l'NPC e il portale
+        # livello 1
         if mondo.livello_id == 1:
             canzone = 'assets/audio/soundtrack.mp3'
             for bat in bats:
@@ -111,7 +103,7 @@ while run:
             portale.update()
             player.enemy = bats
 
-        # Se siamo al livello 2, aggiorna il boss e cambia la musica se necessario
+        # livello 2
         if mondo.livello_id == 2:
             nuova_canzone = 'assets/audio/boss_soundtrack.mp3'
             if nuova_canzone != canzone:
@@ -126,9 +118,7 @@ while run:
                     boss.update()
                 else:
                     win.update()
-            # Imposta i nemici del giocatore al boss
             player.enemy = bosses
-        # Disegna l'HUD (ad es. la barra della vita)
         hud.draw(events)
 
     pygame.display.update()

@@ -30,7 +30,7 @@ def load_assets():
     sounds["morte"].set_volume(0.5)
     sounds["stone"].set_volume(0.1)
     sounds["acqua"].set_volume(0.1)
-    sounds["attack"].set_volume(0.1)
+    sounds["attack"].set_volume(0.5)
     sounds["player_dmg"].set_volume(0.1)
 
     NPC_IMAGES = {

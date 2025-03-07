@@ -33,6 +33,7 @@ class Enemy:
 
 
     def update(self):
+        # si muove verso il giocatore
         if self.rect.topleft != (self.dest_x, self.dest_y):
             dx = self.dest_x - self.rect.x
             dy = self.dest_y - self.rect.y
@@ -59,6 +60,7 @@ class Enemy:
                 self.last_attack_time = current_time
 
     def calcola_prossima_mossa(self):
+        # segue il giocatore
         dx = self.player.tile_x - self.tile_x
         dy = self.player.tile_y - self.tile_y
         new_tx, new_ty = self.tile_x, self.tile_y
