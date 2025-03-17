@@ -18,7 +18,7 @@ class Win:
             "Sviluppato da: Rock A' Raso GAME LLC",
             "Allocca Vincenzo,",
             "Cerciello Antonio,",
-            "Cestie' Augusto",
+            "Cestie' Augusto,",
             "Pellegrino Andrea,",
             "Prisco Carmine,",
             "Sdino Raffaele",
